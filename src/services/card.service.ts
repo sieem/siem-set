@@ -1,5 +1,7 @@
-import type { ICard } from '../components/Card/card.interfacerd/card.interface';
+import type { ICard } from '../components/Card/card.interface';
+
 let cards = [];
+let activatedCardPromises = [];
 
 export const generateAllCards = (): ICard[] => {
     let i = -1;
@@ -27,3 +29,29 @@ export const generateAllCards = (): ICard[] => {
 
     return cards.splice(0,12);
 }
+
+export const handleCardClick = async (cardId: string, active: boolean) => {
+    const activatedCardPromise = {
+        cardId,
+        promise: null,
+        resolve: null,
+    };
+    activatedCardPromise.promise = new Promise((resolve) => activatedCardPromise.resolve = resolve)
+
+    if (active) {
+        activatedCardPromises.push(activatedCardPromise);
+    } else {
+        activatedCardPromises = activatedCardPromises.filter((el) => el.cardId !== cardId);
+    }
+
+    if (activatedCardPromises.length === 3) {
+        await new Promise((resolve) => setTimeout(() => resolve(''), 100));
+        for (const activatedCard of activatedCardPromises) {
+            activatedCard.resolve();
+        }
+        activatedCardPromises = [];
+    }
+
+    return activatedCardPromise.promise;
+}
+

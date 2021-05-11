@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { handleCardClick } from "../../services/card.service";
 	import type { Amount } from "./Enum/amount.enum";
 	import { Color } from "./Enum/color.enum";
 	import { Filling } from "./Enum/filling.enum";
@@ -8,12 +9,21 @@
 	export let color: Color;
 	export let filling: Filling;
 	export let shape: Shape;
+	let active = false;
+
+	const handleClick = async () => {
+		active = !active;
+		
+		await handleCardClick(`${amount}${color}${filling}${shape}`, active);
+
+		active = false;
+	}
 </script>
 
-<div class="card">
+<div class="card {active ? 'active': ''}" on:click={handleClick}>
     {#each Array(amount + 1) as i}
-		<div 
-				class="element {Color[color].toLowerCase()} {Filling[filling].toLowerCase()} {Shape[shape].toLowerCase()}">
+		<div
+			class="element {Color[color].toLowerCase()} {Filling[filling].toLowerCase()} {Shape[shape].toLowerCase()}">
 		</div>
 	{/each}
 </div>
@@ -22,12 +32,17 @@
 	.card {
 		background: white;
 		border-radius: 25px;
-		border: 1px solid #aaa;
+		border: 5px solid #aaa;
 
 		display: flex;
 		flex-direction: column;
 		justify-content: space-evenly;
 		align-items: center;
+		cursor: pointer;
+	}
+
+	.card.active {
+		border-color: salmon;
 	}
 
 	.element {
