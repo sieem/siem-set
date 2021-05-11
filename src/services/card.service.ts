@@ -1,4 +1,4 @@
-import type { ICard } from '../components/Card/card.interface';
+import type { ICard } from '../components/Card/ICard.interface';
 
 let cards = [];
 let activatedCardPromises = [];

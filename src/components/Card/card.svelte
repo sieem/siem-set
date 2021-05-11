@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { handleCardClick } from "../../services/card.service";
-	import type { Amount } from "./Enum/amount.enum";
-	import { Color } from "./Enum/color.enum";
-	import { Filling } from "./Enum/filling.enum";
-	import { Shape } from "./Enum/shape.enum";
+	import { handleCardClick } from "../../services/Card.service";
+	import type { Amount } from "./Enum/Amount.enum";
+	import { Color } from "./Enum/Color.enum";
+	import { Filling } from "./Enum/Filling.enum";
+	import { Shape } from "./Enum/Shape.enum";
 
 	export let amount: Amount;
 	export let color: Color;
