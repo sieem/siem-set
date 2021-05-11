@@ -1,9 +1,7 @@
 <script lang="ts">
-	import { handleCardClick } from "../../services/Card.service";
-    console.log(handleCardClick);
 </script>
 
-<div>cards</div>
+<div>cards remaining</div>
 
 <style>
 
