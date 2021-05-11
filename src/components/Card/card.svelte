@@ -13,8 +13,10 @@
 
 	const handleClick = async () => {
 		active = !active;
-		
-		await handleCardClick(`${amount}${color}${filling}${shape}`, active);
+
+		try {
+			({amount, color, filling, shape} = await handleCardClick(`${amount}${color}${filling}${shape}`, active));
+		} catch (error) {}
 
 		active = false;
 	}

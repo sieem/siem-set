@@ -2,6 +2,7 @@ import type { ICard } from '../components/Card/card.interface';
 
 let cards = [];
 let activatedCardPromises = [];
+const correctPairs = ['000', '111', '222', '012']
 
 export const generateAllCards = (): ICard[] => {
     let i = -1;
@@ -35,8 +36,12 @@ export const handleCardClick = async (cardId: string, active: boolean) => {
         cardId,
         promise: null,
         resolve: null,
+        reject: null,
     };
-    activatedCardPromise.promise = new Promise((resolve) => activatedCardPromise.resolve = resolve)
+    activatedCardPromise.promise = new Promise((resolve, reject) => {
+        activatedCardPromise.resolve = resolve;
+        activatedCardPromise.reject = reject;
+    })
 
     if (active) {
         activatedCardPromises.push(activatedCardPromise);
@@ -46,8 +51,14 @@ export const handleCardClick = async (cardId: string, active: boolean) => {
 
     if (activatedCardPromises.length === 3) {
         await new Promise((resolve) => setTimeout(() => resolve(''), 100));
-        for (const activatedCard of activatedCardPromises) {
-            activatedCard.resolve();
+        if (checkCardPair(activatedCardPromises.map((el) => el.cardId))) {
+            for (const activatedCard of activatedCardPromises) {
+                activatedCard.resolve(...cards.splice(0, 1));
+            }
+        } else {
+            for (const activatedCard of activatedCardPromises) {
+                activatedCard.reject();
+            }
         }
         activatedCardPromises = [];
     }
@@ -55,3 +66,14 @@ export const handleCardClick = async (cardId: string, active: boolean) => {
     return activatedCardPromise.promise;
 }
 
+const checkCardPair = (activatedCards): boolean => {
+    const activatedCardsSplit = activatedCards.map((activatedCard) => activatedCard.split(''));
+    for (let i = 0; i < 4; i++) {
+        const numberToCheck = activatedCardsSplit.map((el) => el[i]).sort().join('');
+        if (!correctPairs.includes(numberToCheck)) {
+            return false;
+        }
+    }
+
+    return true;
+}
