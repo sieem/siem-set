@@ -1,8 +1,10 @@
 import type { ICard } from '../components/Card/ICard.interface';
+import { writable } from 'svelte/store';
 
 let cards = [];
 let activatedCardPromises = [];
-const correctPairs = ['000', '111', '222', '012']
+const correctPairs = ['000', '111', '222', '012'];
+export const cardsRemaining = writable('cardsRemaining');
 
 export const generateAllCards = (): ICard[] => {
     let i = -1;
@@ -28,7 +30,11 @@ export const generateAllCards = (): ICard[] => {
             Math.random() > Math.random() ? -1 : 1
         );
 
-    return cards.splice(0,12);
+    const activatedCards = cards.splice(0, 12);
+
+    cardsRemaining.set(String(cards.length));
+
+    return activatedCards;
 }
 
 export const handleCardClick = async (cardId: string, active: boolean) => {
@@ -61,6 +67,7 @@ export const handleCardClick = async (cardId: string, active: boolean) => {
             }
         }
         activatedCardPromises = [];
+        cardsRemaining.update((existing) => String(cards.length));
     }
 
     return activatedCardPromise.promise;
