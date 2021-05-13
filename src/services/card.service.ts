@@ -75,6 +75,10 @@ export const generateAllCards = (): void => {
 }
 
 const checkCardPair = (cards: ICard[]): boolean => {
+    if (cards.includes(undefined)) {
+        alert('No valid sets to be found, you won the game');
+        return true;
+    }
     const cardIds = cards.map((card) => getCardId(card));
     const cardsSplit = cardIds.map((activatedCardId) => activatedCardId.split(''));
 
