@@ -7,5 +7,6 @@ export interface ICard {
     color: Color,
     amount: Amount,
     filling: Filling,
-    shape: Shape
+    shape: Shape,
+    active: boolean,
 }

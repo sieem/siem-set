@@ -1,11 +1,11 @@
 <script lang="ts">
-    import { cardsRemaining } from '../../services/Card.service';
-    let _cardsRemaining = '';
-    cardsRemaining.subscribe((value) => _cardsRemaining = value);
+    import { cardsRemainingStore } from '../../services/Card.service';
+    let cardsRemaining: number;
+    cardsRemainingStore.subscribe((_cardsRemaining) => cardsRemaining = _cardsRemaining);
 
 </script>
 
-<div class="cardsRemaining">{_cardsRemaining}</div>
+<div class="cardsRemaining">{cardsRemaining}</div>
 
 <style>
     

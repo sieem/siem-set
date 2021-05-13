@@ -1,31 +1,27 @@
 <script lang="ts">
-	import { handleCardClick } from "../../services/Card.service";
-	import type { Amount } from "./Enum/Amount.enum";
+	import { activatedCardsStore, handleCardClick } from "../../services/Card.service";
 	import { Color } from "./Enum/Color.enum";
 	import { Filling } from "./Enum/Filling.enum";
 	import { Shape } from "./Enum/Shape.enum";
+	import type { ICard } from "./ICard.interface";
 
-	export let amount: Amount;
-	export let color: Color;
-	export let filling: Filling;
-	export let shape: Shape;
-	let active = false;
+	export let card: ICard;
 
 	const handleClick = async () => {
-		active = !active;
+		card.active = !card.active;
 
-		try {
-			({amount, color, filling, shape} = await handleCardClick({amount, color, filling, shape}, active));
-		} catch (error) {}
-
-		active = false;
+		if (card.active) {
+			activatedCardsStore.update((_activatedCards) => ([card, ..._activatedCards]));
+		} else {
+			activatedCardsStore.update((_activatedCards) => _activatedCards.filter((_activatedCard) => _activatedCard !== card));
+		}
 	}
 </script>
 
-<div class="card {active ? 'active': ''}" on:click={handleClick}>
-    {#each Array(amount + 1) as i}
+<div class="card {card.active ? 'active': ''}" on:click={handleClick}>
+    {#each Array(card.amount + 1) as i}
 		<div
-			class="element {Color[color].toLowerCase()} {Filling[filling].toLowerCase()} {Shape[shape].toLowerCase()}">
+			class="element {Color[card.color].toLowerCase()} {Filling[card.filling].toLowerCase()} {Shape[card.shape].toLowerCase()}">
 		</div>
 	{/each}
 </div>

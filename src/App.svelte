@@ -6,9 +6,12 @@
 	import CardsRemaining from './components/CardsRemaining/CardsRemaining.svelte';
 
 	import type { ICard } from './components/Card/ICard.interface';
-	import { generateAllCards } from './services/Card.service';
+	import { generateAllCards, cardsOnTheTableStore } from './services/Card.service';
 
-	const allCards: ICard[] = generateAllCards();
+    let cardsOnTheTable: ICard[] = [];
+    cardsOnTheTableStore.subscribe((_cardsOnTheTable: ICard[]) => cardsOnTheTable = _cardsOnTheTable);
+
+	generateAllCards();
 </script>
 
 <svelte:head>
@@ -22,8 +25,8 @@
 		<Menu/>
 	</header>
 	<div class="field">
-		{#each allCards as card}
-			<Card {...card}/>
+		{#each cardsOnTheTable as card}
+			<Card {card}/>
 		{/each}
 	</div>
 	<footer>
