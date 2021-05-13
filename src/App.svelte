@@ -15,7 +15,7 @@
 </script>
 
 <svelte:head>
-	<title>Home</title>
+	<title>SiemSet</title>
 </svelte:head>
 
 <div id="main">

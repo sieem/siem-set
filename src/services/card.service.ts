@@ -18,7 +18,12 @@ const checkIfThereIsAValidPair = (cards: ICard[]): boolean => {
             .split('')
             .map((el) => parseInt(el, 12))
             .map((el) => cards[el]);
-        
+
+        if (new Set(cardPair).size !== 3) {
+            continue;
+        }
+
+
         if (checkCardPair(cardPair)) {
             return true;
         };
@@ -55,13 +60,32 @@ export const generateAllCards = (): void => {
 
     cardsOnTheTable = cards.splice(0, 12);
 
-    while (!checkIfThereIsAValidPair(cardsOnTheTable)) {
-        cards = [...cardsOnTheTable, ...cards];
+    for (let i = 0; i < 500; i++) {
+        if (checkIfThereIsAValidPair(cardsOnTheTable)) {
+            i = 500;
+            continue;
+        }
+
+        cards = [...cards, ...cardsOnTheTable];
         cardsOnTheTable = cards.splice(0, 12);
     }
 
     cardsRemainingStore.set(cards.length);
     cardsOnTheTableStore.set(cardsOnTheTable);
+}
+
+const checkCardPair = (cards: ICard[]): boolean => {
+    const cardIds = cards.map((card) => getCardId(card));
+    const cardsSplit = cardIds.map((activatedCardId) => activatedCardId.split(''));
+
+    for (let i = 0; i < 4; i++) {
+        const numberToCheck = cardsSplit.map((el) => el[i]).sort().join('');
+        if (!correctPairs.includes(numberToCheck)) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 activatedCardsStore.subscribe((_activatedCards: ICard[]) => {
@@ -71,12 +95,16 @@ activatedCardsStore.subscribe((_activatedCards: ICard[]) => {
 
             let newCardsOnTheTable = cards.splice(0, 3);
 
-            while (!checkIfThereIsAValidPair([...newCardsOnTheTable, ...cardsOnTheTable])) {
-                cards = [...newCardsOnTheTable, ...cards];
+            for (let i = 0; i < 500; i++) {
+                if (checkIfThereIsAValidPair([...cardsOnTheTable, ...newCardsOnTheTable])) {
+                    i = 500;
+                    continue;
+                }
+                cards = [...cards, ...newCardsOnTheTable];
                 newCardsOnTheTable = cards.splice(0, 3);
             }
 
-            cardsOnTheTable = [...newCardsOnTheTable, ...cardsOnTheTable];
+            cardsOnTheTable = [...cardsOnTheTable , ...newCardsOnTheTable];
         }
 
         cardsRemainingStore.update((existing) => cards.length);
@@ -85,21 +113,3 @@ activatedCardsStore.subscribe((_activatedCards: ICard[]) => {
         activatedCardsStore.set([]);
     }
 });
-
-export const handleCardClick = (card: ICard) => {
-    
-}
-
-const checkCardPair = (activatedCards: ICard[]): boolean => {
-    const activatedCardIds = activatedCards.map((card) => getCardId(card));
-    const activatedCardsSplit = activatedCardIds.map((activatedCardId) => activatedCardId.split(''));
-
-    for (let i = 0; i < 4; i++) {
-        const numberToCheck = activatedCardsSplit.map((el) => el[i]).sort().join('');
-        if (!correctPairs.includes(numberToCheck)) {
-            return false;
-        }
-    }
-
-    return true;
-}

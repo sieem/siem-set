@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { activatedCardsStore, handleCardClick } from "../../services/Card.service";
+	import { activatedCardsStore } from "../../services/Card.service";
 	import { Color } from "./Enum/Color.enum";
 	import { Filling } from "./Enum/Filling.enum";
 	import { Shape } from "./Enum/Shape.enum";
