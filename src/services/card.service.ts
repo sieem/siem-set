@@ -2,9 +2,31 @@ import type { ICard } from '../components/Card/ICard.interface';
 import { writable } from 'svelte/store';
 
 let cards = [];
+let cardsOnTheTable;
 let activatedCardPromises = [];
 const correctPairs = ['000', '111', '222', '012'];
 export const cardsRemaining = writable('cardsRemaining');
+
+const getCardId = ({ amount, color, filling, shape }: ICard): string => `${amount}${color}${filling}${shape}`;
+
+const checkIfThereIsAValidPair = (cards: ICard[]): boolean => {
+    for (let i = 0; i < Math.pow(cards.length, 3); i++) {
+        const cardPair = i
+            .toString(12)
+            .padStart(3, '0')
+            .split('')
+            .map((el) => parseInt(el, 12))
+            .map((el) => cards[el]);
+        
+        if (checkCardPair(cardPair)) {
+            console.log('valid pair found');
+            return true;
+        };
+    }
+
+    console.log('no valid pairs found');
+    return false;
+}
 
 export const generateAllCards = (): ICard[] => {
     let i = -1;
@@ -30,15 +52,22 @@ export const generateAllCards = (): ICard[] => {
             Math.random() > Math.random() ? -1 : 1
         );
 
-    const activatedCards = cards.splice(0, 12);
+    cardsOnTheTable = cards.splice(0, 12);
+
+    while (!checkIfThereIsAValidPair(cardsOnTheTable)) {
+        cards = [...cardsOnTheTable, ...cards];
+        cardsOnTheTable = cards.splice(0, 12);
+    }
 
     cardsRemaining.set(String(cards.length));
 
-    return activatedCards;
+    return cardsOnTheTable;
 }
 
-export const handleCardClick = async (cardId: string, active: boolean) => {
+export const handleCardClick = async (card: ICard, active: boolean) => {
+    const cardId = getCardId(card);
     const activatedCardPromise = {
+        card,
         cardId,
         promise: null,
         resolve: null,
@@ -57,9 +86,18 @@ export const handleCardClick = async (cardId: string, active: boolean) => {
 
     if (activatedCardPromises.length === 3) {
         await new Promise((resolve) => setTimeout(() => resolve(''), 100));
-        if (checkCardPair(activatedCardPromises.map((el) => el.cardId))) {
+        if (checkCardPair(activatedCardPromises.map((el) => el.card))) {
+            cardsOnTheTable = cardsOnTheTable.filter((card) => !activatedCardPromises.map((el) => el.cardId).includes(getCardId(card)));
+
+            let newCardsOnTheTable = cards.splice(0, 3);
+
+            while (!checkIfThereIsAValidPair([...newCardsOnTheTable, ...cardsOnTheTable])) {
+                cards = [...newCardsOnTheTable, ...cards];
+                newCardsOnTheTable = cards.splice(0, 3);
+            }
+
             for (const activatedCard of activatedCardPromises) {
-                activatedCard.resolve(...cards.splice(0, 1));
+                activatedCard.resolve(...newCardsOnTheTable.splice(0,1));
             }
         } else {
             for (const activatedCard of activatedCardPromises) {
@@ -73,8 +111,9 @@ export const handleCardClick = async (cardId: string, active: boolean) => {
     return activatedCardPromise.promise;
 }
 
-const checkCardPair = (activatedCards): boolean => {
-    const activatedCardsSplit = activatedCards.map((activatedCard) => activatedCard.split(''));
+const checkCardPair = (activatedCards: ICard[]): boolean => {
+    const activatedCardIds = activatedCards.map((card) => getCardId(card));
+    const activatedCardsSplit = activatedCardIds.map((activatedCardId) => activatedCardId.split(''));
     for (let i = 0; i < 4; i++) {
         const numberToCheck = activatedCardsSplit.map((el) => el[i]).sort().join('');
         if (!correctPairs.includes(numberToCheck)) {

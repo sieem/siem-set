@@ -15,7 +15,7 @@
 		active = !active;
 
 		try {
-			({amount, color, filling, shape} = await handleCardClick(`${amount}${color}${filling}${shape}`, active));
+			({amount, color, filling, shape} = await handleCardClick({amount, color, filling, shape}, active));
 		} catch (error) {}
 
 		active = false;
