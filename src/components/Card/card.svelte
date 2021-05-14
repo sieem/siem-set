@@ -18,7 +18,7 @@
 	}
 </script>
 
-<div class="card {card.active ? 'active': ''}" on:click={handleClick}>
+<div class="card {card.active ? 'active': ''}" on:click|capture={handleClick}>
     {#each Array(card.amount + 1) as i}
 		<div
 			class="element {Color[card.color].toLowerCase()} {Filling[card.filling].toLowerCase()} {Shape[card.shape].toLowerCase()}">
@@ -37,6 +37,9 @@
 		justify-content: space-evenly;
 		align-items: center;
 		cursor: pointer;
+
+		/* removes blue highlight after touch click */
+		-webkit-tap-highlight-color:  rgba(255, 255, 255, 0);
 	}
 
 	.card.active {
