@@ -12,8 +12,6 @@
     cardsOnTheTableStore.subscribe((_cardsOnTheTable: ICard[]) => cardsOnTheTable = _cardsOnTheTable);
 
 	generateAllCards();
-
-	const handleClick = () => installPWA();
 </script>
 
 <svelte:head>
@@ -33,10 +31,6 @@
 	</div>
 	<footer>
 		<CardsRemaining/>
-
-		<div id="installContainer">
-			<button on:click="{handleClick}">Install</button>
-		</div>
 	</footer>
 </div>
 
