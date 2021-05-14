@@ -1,16 +1,13 @@
 <script lang="ts">
-    const startTime = new Date();
-    let time;
-    setTime();
+    let time = 0;
+    let timer = setInterval(() => time++, 1000);
 
-    setInterval(() => {
-        setTime();
-    }, 1000);
 
-    function setTime() {
-        time = Math.round((new Date().getTime() - startTime.getTime()) / 1000);
-    }
-
+    document.addEventListener('visibilitychange', (ev) => 
+        document.visibilityState === 'visible'
+            ? timer = setInterval(() => time++, 1000)
+            : clearInterval(timer)
+    );
 </script>
 
 <div>{time}</div>
