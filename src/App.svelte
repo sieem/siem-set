@@ -7,11 +7,14 @@
 
 	import type { ICard } from './components/Card/ICard.interface';
 	import { generateAllCards, cardsOnTheTableStore } from './services/Card.service';
+	import { requestWakeLock } from './services/WakeLock.service';
 
     let cardsOnTheTable: ICard[] = [];
     cardsOnTheTableStore.subscribe((_cardsOnTheTable: ICard[]) => cardsOnTheTable = _cardsOnTheTable);
 
 	generateAllCards();
+
+	requestWakeLock();
 </script>
 
 <svelte:head>
