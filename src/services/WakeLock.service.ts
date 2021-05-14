@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 // The wake lock sentinel.
 let wakeLock = null;
 
