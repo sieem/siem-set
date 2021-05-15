@@ -2,6 +2,9 @@
 	padding: 0;
 	margin: 0;
 	box-sizing: border-box;
+
+	/* removes blue highlight after touch click */
+	-webkit-tap-highlight-color: transparent;
 }
 
 body {

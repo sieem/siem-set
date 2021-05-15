@@ -37,9 +37,6 @@
 		justify-content: space-evenly;
 		align-items: center;
 		cursor: pointer;
-
-		/* removes blue highlight after touch click */
-		-webkit-tap-highlight-color:  rgba(255, 255, 255, 0);
 	}
 
 	.card.active {
