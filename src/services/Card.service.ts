@@ -95,7 +95,8 @@ const checkCardPair = (cards: ICard[]): boolean => {
 activatedCardsStore.subscribe((_activatedCards: ICard[]) => {
     if (_activatedCards.length === 3) {
         if (checkCardPair(_activatedCards)) {
-            cardsOnTheTable = cardsOnTheTable.filter((card) => !_activatedCards.map((activatedCard) => getCardId(activatedCard)).includes(getCardId(card)));
+            const oldCardsOnTheTable = cardsOnTheTable;
+            cardsOnTheTable = cardsOnTheTable.filter((cardOnTheTable) => !_activatedCards.map((activatedCard) => getCardId(activatedCard)).includes(getCardId(cardOnTheTable)));
 
             let newCardsOnTheTable = cards.splice(0, 3);
 
@@ -108,7 +109,11 @@ activatedCardsStore.subscribe((_activatedCards: ICard[]) => {
                 newCardsOnTheTable = cards.splice(0, 3);
             }
 
-            cardsOnTheTable = [...cardsOnTheTable , ...newCardsOnTheTable];
+            cardsOnTheTable = oldCardsOnTheTable.map((cardOnTheTable) => 
+                _activatedCards.map((activatedCard) => getCardId(activatedCard)).includes(getCardId(cardOnTheTable))
+                ? newCardsOnTheTable.splice(0,1)[0]
+                : cardOnTheTable
+            )
         }
 
         cardsRemainingStore.update((existing) => cards.length);
