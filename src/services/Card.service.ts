@@ -1,6 +1,7 @@
 import type { ICard } from '../components/Card/ICard.interface';
 import { writable } from 'svelte/store';
-import { timerStore } from './Timer.service';
+import { countScore } from './Score.service';
+import { handleEndOfGame } from './EndGame.service';
 
 let cards = [];
 let cardsOnTheTable: ICard[] = [];
@@ -10,6 +11,7 @@ const correctPairs = ['000', '111', '222', '012'];
 export const cardsRemainingStore = writable(81);
 
 const getCardId = ({ amount, color, filling, shape }: ICard): string => `${amount}${color}${filling}${shape}`;
+const getCardIds = (cards: ICard[]): string[] => cards.map((card) => getCardId(card));
 
 const checkIfThereIsAValidPair = (cards: ICard[]): boolean => {
     for (let i = 0; i < Math.pow(cards.length, 3); i++) {
@@ -77,8 +79,7 @@ export const generateAllCards = (): void => {
 
 const checkCardPair = (cards: ICard[]): boolean => {
     if (cards.includes(undefined)) {
-        alert('No valid sets to be found, you won the game');
-        timerStore.set(false);
+        handleEndOfGame();
         return true;
     }
     const cardIds = cards.map((card) => getCardId(card));
@@ -94,11 +95,11 @@ const checkCardPair = (cards: ICard[]): boolean => {
     return true;
 }
 
-activatedCardsStore.subscribe((_activatedCards: ICard[]) => {
-    if (_activatedCards.length === 3) {
-        if (checkCardPair(_activatedCards)) {
+activatedCardsStore.subscribe((activatedCards: ICard[]) => {
+    if (activatedCards.length === 3) {
+        if (checkCardPair(activatedCards)) {
             const oldCardsOnTheTable = cardsOnTheTable;
-            cardsOnTheTable = cardsOnTheTable.filter((cardOnTheTable) => !_activatedCards.map((activatedCard) => getCardId(activatedCard)).includes(getCardId(cardOnTheTable)));
+            cardsOnTheTable = cardsOnTheTable.filter((cardOnTheTable) => !getCardIds(activatedCards).includes(getCardId(cardOnTheTable)));
 
             let newCardsOnTheTable = cards.splice(0, 3);
 
@@ -112,10 +113,12 @@ activatedCardsStore.subscribe((_activatedCards: ICard[]) => {
             }
 
             cardsOnTheTable = oldCardsOnTheTable.map((cardOnTheTable) => 
-                _activatedCards.map((activatedCard) => getCardId(activatedCard)).includes(getCardId(cardOnTheTable))
+                getCardIds(activatedCards).includes(getCardId(cardOnTheTable))
                 ? newCardsOnTheTable.splice(0,1)[0]
                 : cardOnTheTable
-            )
+            );
+
+            countScore(getCardIds(activatedCards));
         }
 
         cardsRemainingStore.update((existing) => cards.length);
