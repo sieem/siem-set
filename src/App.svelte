@@ -70,6 +70,19 @@
 		grid-gap: var(--gap);
 	}
 
+
+	/* iPad */
+	@media screen and (min-width: 768px) and (max-height: 1024px) {
+		#main {
+			max-width: 800px;
+		}
+		.field {
+			grid-template-columns: 1fr 1fr 1fr 1fr;
+			grid-template-rows: 1fr 1fr 1fr;
+		}
+	}
+
+
 	.paused-container {
 		display: grid;
 		place-items: center;
