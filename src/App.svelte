@@ -3,6 +3,7 @@
 	import Score from './components/Score/Score.svelte';
 	import Timer from './components/Timer/Timer.svelte';
 	import Menu from './components/Menu/Menu.svelte';
+	import Help from './components/Help/Help.svelte';
 	import CardsRemaining from './components/CardsRemaining/CardsRemaining.svelte';
 	import type { ICard } from './components/Card/ICard.interface';
 	import { generateAllCards, cardsOnTheTableStore } from './services/Card.service';
@@ -43,6 +44,8 @@
 	
 	<footer>
 		<CardsRemaining/>
+		<div></div>
+		<Help/>
 	</footer>
 </div>
 
@@ -55,6 +58,7 @@
 		max-width: 600px;
 		margin: auto;
 		padding: var(--gap);
+		position: relative;
 	}
 
 	header {

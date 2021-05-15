@@ -1,5 +1,5 @@
 <script lang="ts">
-import { timerStore } from "../../services/Timer.service";
+    import { timerStore } from "../../services/Timer.service";
     let ticking: boolean;
 
     timerStore.subscribe((_ticking) => ticking = _ticking);
