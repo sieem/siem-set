@@ -5,7 +5,7 @@
     scoreStore.subscribe((_score) => score = _score);
 </script>
 
-<div>Score: {score}</div>
+<div><b>Score</b> {score}</div>
 
 <style>
 

@@ -18,9 +18,11 @@
 
     timeStore.subscribe((_time) => time = _time);
     timerStore.subscribe((_ticking) => ticking = _ticking);
+
+    const timeDisplayer = (time) => `${Math.floor(time/60)}:${String(time % 60).padStart(2, '0')}`;
 </script>
 
-<div>{time}</div>
+<div>{timeDisplayer(time)}</div>
 
 <style>
 
