@@ -1,5 +1,6 @@
 import type { ICard } from '../components/Card/ICard.interface';
 import { writable } from 'svelte/store';
+import { timerStore } from './Timer.service';
 
 let cards = [];
 let cardsOnTheTable: ICard[] = [];
@@ -77,6 +78,7 @@ export const generateAllCards = (): void => {
 const checkCardPair = (cards: ICard[]): boolean => {
     if (cards.includes(undefined)) {
         alert('No valid sets to be found, you won the game');
+        timerStore.set(false);
         return true;
     }
     const cardIds = cards.map((card) => getCardId(card));

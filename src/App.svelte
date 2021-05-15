@@ -4,16 +4,18 @@
 	import Timer from './components/Timer/Timer.svelte';
 	import Menu from './components/Menu/Menu.svelte';
 	import CardsRemaining from './components/CardsRemaining/CardsRemaining.svelte';
-
 	import type { ICard } from './components/Card/ICard.interface';
 	import { generateAllCards, cardsOnTheTableStore } from './services/Card.service';
 	import { requestWakeLock } from './services/WakeLock.service';
+	import { timerStore } from './services/Timer.service';
 
-    let cardsOnTheTable: ICard[] = [];
-    cardsOnTheTableStore.subscribe((_cardsOnTheTable: ICard[]) => cardsOnTheTable = _cardsOnTheTable);
-
+	let cardsOnTheTable: ICard[] = [];
+	let ticking: boolean;
+	
+	cardsOnTheTableStore.subscribe((_cardsOnTheTable: ICard[]) => cardsOnTheTable = _cardsOnTheTable);
+	timerStore.subscribe((_ticking) => ticking = _ticking);
+	
 	generateAllCards();
-
 	requestWakeLock();
 </script>
 
@@ -27,11 +29,18 @@
 		<Timer/>
 		<Menu/>
 	</header>
-	<div class="field">
-		{#each cardsOnTheTable as card}
-			<Card {card}/>
-		{/each}
-	</div>
+	{#if ticking}
+		<div class="field">
+			{#each cardsOnTheTable as card}
+				<Card {card}/>
+			{/each}
+		</div>
+	{:else}
+		<div class="paused-container">
+			<div>Game Paused</div>
+		</div>
+	{/if}
+	
 	<footer>
 		<CardsRemaining/>
 	</footer>
@@ -39,11 +48,13 @@
 
 <style>
 	#main {
+		--gap: 10px;
 		height: 100vh;
 		display: grid;
 		grid-template-rows: 50px 1fr 50px;
 		max-width: 600px;
 		margin: auto;
+		padding: var(--gap);
 	}
 
 	header {
@@ -56,8 +67,12 @@
 		display:grid;
 		grid-template-columns: 1fr 1fr 1fr;
 		grid-template-rows: 1fr 1fr 1fr 1fr;
-		grid-gap: 10px;
-		padding: 10px;
+		grid-gap: var(--gap);
+	}
+
+	.paused-container {
+		display: grid;
+		place-items: center;
 	}
 
 	footer {

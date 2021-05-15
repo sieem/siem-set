@@ -18,7 +18,7 @@
 	}
 </script>
 
-<div class="card {card.active ? 'active': ''}" on:click|capture={handleClick}>
+<div class="card {card.active ? 'active': ''}" on:click={handleClick}>
     {#each Array(card.amount + 1) as i}
 		<div
 			class="element {Color[card.color].toLowerCase()} {Filling[card.filling].toLowerCase()} {Shape[card.shape].toLowerCase()}">

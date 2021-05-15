@@ -1,13 +1,10 @@
 <script lang="ts">
+    import { timeStore, controlTimer } from "../../services/Timer.service";
     let time = 0;
-    let timer = setInterval(() => time++, 1000);
 
+    document.addEventListener('visibilitychange', (ev) => controlTimer(document.visibilityState === 'visible'));
 
-    document.addEventListener('visibilitychange', (ev) => 
-        document.visibilityState === 'visible'
-            ? timer = setInterval(() => time++, 1000)
-            : clearInterval(timer)
-    );
+    timeStore.subscribe((_time) => time = _time);
 </script>
 
 <div>{time}</div>
