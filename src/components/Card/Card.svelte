@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { tap } from '@sveltejs/gestures';
+	import { tap } from 'svelte-hammer';
 	import { activatedCardsStore } from "../../services/Card.service";
 	import { Color } from "./Enum/Color.enum";
 	import { Filling } from "./Enum/Filling.enum";
@@ -19,7 +19,7 @@
 	}
 </script>
 
-<div class="card {card.active ? 'active': ''}" use:tap on:tap={handleClick}>
+<div class="card {card.active ? 'active': ''}" use:tap={{ interval: 0 }} on:tap={handleClick}>
     {#each Array(card.amount + 1) as i}
 		<div
 			class="element {Color[card.color].toLowerCase()} {Filling[card.filling].toLowerCase()} {Shape[card.shape].toLowerCase()}">

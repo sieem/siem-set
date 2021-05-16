@@ -59,7 +59,9 @@ export default {
 			browser: true,
 			dedupe: ['svelte']
 		}),
-		commonjs(),
+		commonjs({
+			namedExports: { 'svelte-hammer': ['Hammer', 'pan', 'pinch', 'press', 'rotate', 'swipe', 'tap'] },
+		}),
 		typescript({
 			sourceMap: !production,
 			inlineSources: !production
