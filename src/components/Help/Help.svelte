@@ -64,6 +64,7 @@
     line-height: 1.4;
     text-align: center;
     cursor: pointer;
+    justify-self: end;
 }
 
 .help-container {

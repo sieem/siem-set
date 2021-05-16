@@ -25,5 +25,7 @@
 <div>{timeDisplayer(time)}</div>
 
 <style>
-
+div {
+    justify-self: center;
+}
 </style>

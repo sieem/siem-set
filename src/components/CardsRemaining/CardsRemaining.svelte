@@ -19,6 +19,7 @@
         font-weight: bold;
         line-height: 1.4;
         text-align: center;
+        justify-self: start;
     }
 
     .card {

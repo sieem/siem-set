@@ -11,6 +11,10 @@
 
 
 <style>
+div {
+    justify-self: end;
+}
+
 .button {
     --size: 20px;
     width: var(--size);
