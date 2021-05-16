@@ -1,10 +1,23 @@
 <script lang="ts">
     import { timerStore } from "../../services/Timer.service";
     let ticking: boolean;
+    let lastClick: Date;
 
     timerStore.subscribe((_ticking) => ticking = _ticking);
 
-    const handleClick = () => timerStore.set(!ticking);
+    const handleClick = () => {
+        if (Number(new Date()) - Number(lastClick) < 300) {
+            if (localStorage.getItem('debugMode') === 'true') {
+                localStorage.setItem('debugMode', 'false');
+                screenLog.destroy();
+            } else {
+                localStorage.setItem('debugMode', 'true');
+                screenLog.init();
+            }
+        }
+        lastClick = new Date();
+        timerStore.set(!ticking);
+    };
 </script>
 
 <div class="button {ticking ? 'pause': 'play'}" on:click={handleClick}></div>
@@ -25,7 +38,7 @@ div {
     box-sizing: border-box;
     cursor: pointer;
     position: relative;
-    z-index: 1;
+    z-index: calc(2147483647 + 1); /* higher than screenlog */
 }
 
 .button.play {

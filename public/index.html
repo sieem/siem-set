@@ -23,6 +23,7 @@
   <link rel='stylesheet' href='/build/bundle.css'>
 
   <script defer src='/build/bundle.js'></script>
+  <script src='/scripts/screenlog.min.js'></script>
 </head>
 
 <body>
@@ -41,6 +42,11 @@
             console.log('Service worker registered.', reg);
           });
       });
+    }
+  </script>
+  <script>
+    if (localStorage.getItem('debugMode') === 'true') {
+      screenLog.init();
     }
   </script>
 </body>
