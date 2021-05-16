@@ -1,7 +1,7 @@
 import { writable } from "svelte/store";
 import { getCurrentTime, getLastTimePairFound, setLastTimePairFound } from "./Timer.service";
 let currentScore = 0;
-export const scoreStore = writable(currentScore);
+export const score = writable(currentScore);
 
 export const countScore = ((activatedCardIds: string[]) => {
     const cardsSplit = activatedCardIds.map((activatedCardId) => activatedCardId.split(''));
@@ -20,7 +20,7 @@ export const countScore = ((activatedCardIds: string[]) => {
 
     const newScore = Math.round((1 / (getCurrentTime() - getLastTimePairFound())) * pairScore * 10);
     currentScore = currentScore + newScore;
-    scoreStore.set(currentScore);
+    score.set(currentScore);
 
     setLastTimePairFound();
 });

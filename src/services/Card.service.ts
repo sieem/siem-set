@@ -4,11 +4,11 @@ import { countScore } from './Score.service';
 import { handleEndOfGame } from './EndGame.service';
 
 let cards = [];
-let cardsOnTheTable: ICard[] = [];
-export const cardsOnTheTableStore = writable(cardsOnTheTable);
-export const activatedCardsStore = writable([]);
+let _cardsOnTheTable: ICard[] = [];
+export const cardsOnTheTable = writable(_cardsOnTheTable);
+export const activatedCards = writable([]);
 const correctPairs = ['000', '111', '222', '012'];
-export const cardsRemainingStore = writable(81);
+export const cardsRemaining = writable(81);
 
 const getCardId = ({ amount, color, filling, shape }: ICard): string => `${amount}${color}${filling}${shape}`;
 const getCardIds = (cards: ICard[]): string[] => cards.map((card) => getCardId(card));
@@ -61,20 +61,20 @@ export const generateAllCards = (): void => {
             Math.random() > Math.random() ? -1 : 1
         );
 
-    cardsOnTheTable = cards.splice(0, 12);
+    _cardsOnTheTable = cards.splice(0, 12);
 
     for (let i = 0; i < 500; i++) {
-        if (checkIfThereIsAValidPair(cardsOnTheTable)) {
+        if (checkIfThereIsAValidPair(_cardsOnTheTable)) {
             i = 500;
             continue;
         }
 
-        cards = [...cards, ...cardsOnTheTable];
-        cardsOnTheTable = cards.splice(0, 12);
+        cards = [...cards, ..._cardsOnTheTable];
+        _cardsOnTheTable = cards.splice(0, 12);
     }
 
-    cardsRemainingStore.set(cards.length);
-    cardsOnTheTableStore.set(cardsOnTheTable);
+    cardsRemaining.set(cards.length);
+    cardsOnTheTable.set(_cardsOnTheTable);
 }
 
 const checkCardPair = (cards: ICard[]): boolean => {
@@ -95,16 +95,16 @@ const checkCardPair = (cards: ICard[]): boolean => {
     return true;
 }
 
-activatedCardsStore.subscribe((activatedCards: ICard[]) => {
-    if (activatedCards.length === 3) {
-        if (checkCardPair(activatedCards)) {
-            const oldCardsOnTheTable = cardsOnTheTable;
-            cardsOnTheTable = cardsOnTheTable.filter((cardOnTheTable) => !getCardIds(activatedCards).includes(getCardId(cardOnTheTable)));
+activatedCards.subscribe((_activatedCards: ICard[]) => {
+    if (_activatedCards.length === 3) {
+        if (checkCardPair(_activatedCards)) {
+            const oldCardsOnTheTable = _cardsOnTheTable;
+            _cardsOnTheTable = _cardsOnTheTable.filter((cardOnTheTable) => !getCardIds(_activatedCards).includes(getCardId(cardOnTheTable)));
 
             let newCardsOnTheTable = cards.splice(0, 3);
 
             for (let i = 0; i < 500; i++) {
-                if (checkIfThereIsAValidPair([...cardsOnTheTable, ...newCardsOnTheTable])) {
+                if (checkIfThereIsAValidPair([..._cardsOnTheTable, ...newCardsOnTheTable])) {
                     i = 500;
                     continue;
                 }
@@ -112,18 +112,18 @@ activatedCardsStore.subscribe((activatedCards: ICard[]) => {
                 newCardsOnTheTable = cards.splice(0, 3);
             }
 
-            cardsOnTheTable = oldCardsOnTheTable.map((cardOnTheTable) => 
-                getCardIds(activatedCards).includes(getCardId(cardOnTheTable))
+            _cardsOnTheTable = oldCardsOnTheTable.map((cardOnTheTable) => 
+                getCardIds(_activatedCards).includes(getCardId(cardOnTheTable))
                 ? newCardsOnTheTable.splice(0,1)[0]
                 : cardOnTheTable
             );
 
-            countScore(getCardIds(activatedCards));
+            countScore(getCardIds(_activatedCards));
         }
 
-        cardsRemainingStore.update((existing) => cards.length);
-        cardsOnTheTableStore.update((existing) => cardsOnTheTable.map((cardOnTheTable) => ({ ...cardOnTheTable, active: false })));
+        cardsRemaining.update(() => cards.length);
+        cardsOnTheTable.update(() => _cardsOnTheTable.map((cardOnTheTable) => ({ ...cardOnTheTable, active: false })));
 
-        activatedCardsStore.set([]);
+        activatedCards.set([]);
     }
 });

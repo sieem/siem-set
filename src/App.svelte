@@ -5,16 +5,10 @@
 	import Menu from './components/Menu/Menu.svelte';
 	import Help from './components/Help/Help.svelte';
 	import CardsRemaining from './components/CardsRemaining/CardsRemaining.svelte';
-	import type { ICard } from './components/Card/ICard.interface';
-	import { generateAllCards, cardsOnTheTableStore } from './services/Card.service';
+	import { generateAllCards, cardsOnTheTable } from './services/Card.service';
 	import { requestWakeLock } from './services/WakeLock.service';
-	import { timerStore } from './services/Timer.service';
-
-	let cardsOnTheTable: ICard[] = [];
-	let ticking: boolean;
+	import { timer } from './services/Timer.service';
 	
-	cardsOnTheTableStore.subscribe((_cardsOnTheTable: ICard[]) => cardsOnTheTable = _cardsOnTheTable);
-	timerStore.subscribe((_ticking) => ticking = _ticking);
 	
 	generateAllCards();
 	requestWakeLock();
@@ -32,9 +26,9 @@
 		<Timer/>
 		<Menu/>
 	</header>
-	{#if ticking}
+	{#if $timer}
 		<div class="field">
-			{#each cardsOnTheTable as card}
+			{#each $cardsOnTheTable as card}
 				<Card {card}/>
 			{/each}
 		</div>

@@ -1,11 +1,9 @@
 <script lang="ts">
-    import { timeStore, controlTimer, timerStore } from "../../services/Timer.service";
-    let time = 0;
-    let ticking = false;
+    import { time, controlTimer, timer } from "../../services/Timer.service";
     let visibilityChangePausedTheGame = false;
 
     document.addEventListener('visibilitychange', (ev) => {
-        if (document.visibilityState === 'hidden' && ticking) {
+        if (document.visibilityState === 'hidden' && $timer) {
             controlTimer(false);
             visibilityChangePausedTheGame = true;
         }
@@ -16,13 +14,10 @@
         }
     });
 
-    timeStore.subscribe((_time) => time = _time);
-    timerStore.subscribe((_ticking) => ticking = _ticking);
-
     const timeDisplayer = (time) => `${Math.floor(time/60)}:${String(time % 60).padStart(2, '0')}`;
 </script>
 
-<div>{timeDisplayer(time)}</div>
+<div>{timeDisplayer($time)}</div>
 
 <style>
 div {

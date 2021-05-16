@@ -1,18 +1,18 @@
 import { writable } from "svelte/store";
-export const timerStore = writable(true);
-export const timeStore = writable(0);
+export const timer = writable(true);
+export const time = writable(0);
 
-let timer;
-let time = 0;
+let _timer;
+let _time = 0;
 let lastTimePairFound = 0;
 
 export const controlTimer = (play: boolean) =>
     play
-        ? timer = setInterval(() => time++ && timeStore.set(time), 1000)
-        : clearInterval(timer);
+        ? _timer = setInterval(() => _time++ && time.set(_time), 1000)
+        : clearInterval(_timer);
 
-export const setLastTimePairFound = (): number => lastTimePairFound = time;
+export const setLastTimePairFound = (): number => lastTimePairFound = _time;
 export const getLastTimePairFound = (): number => lastTimePairFound;
-export const getCurrentTime = (): number => time;
+export const getCurrentTime = (): number => _time;
 
-timerStore.subscribe((play: boolean) => controlTimer(play));
+timer.subscribe((play: boolean) => controlTimer(play));

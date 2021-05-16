@@ -1,5 +1,5 @@
 import { getCurrentScore } from "./Score.service";
-import { timerStore } from "./Timer.service";
+import { timer } from "./Timer.service";
 
 export const handleEndOfGame = () => {
     const currentScore = getCurrentScore();
@@ -10,5 +10,5 @@ export const handleEndOfGame = () => {
     } else {
         alert(`Game over, you scored ${currentScore}. But your best high score is ${highScore}. Refresh the page to try again, you can do it! 💪`);
     }
-    timerStore.set(false);
+    timer.set(false);
 };

@@ -1,10 +1,10 @@
 <script lang="ts">
-    import { timerStore } from "../../services/Timer.service";
+    import { timer } from "../../services/Timer.service";
     let showHelp = false;
 
     const handleClick = () => {
         showHelp = !showHelp;
-        timerStore.set(!showHelp);
+        timer.set(!showHelp);
     };
 </script>
 
@@ -74,7 +74,7 @@
     top: 0;
     left: 0;
     background: #ADD8E6E6;
-    z-index: 10;
+    z-index: calc(2147483647 + 2); /* Above play/pause button */
     padding: 50px;
     overflow: auto;
 }

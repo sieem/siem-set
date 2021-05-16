@@ -1,13 +1,10 @@
 <script lang="ts">
-    import { scoreStore } from "../../services/Score.service";
-    let score = 0;
+    import { score } from "../../services/Score.service";
     const highScore = Number(localStorage.getItem('highScore'));
-
-    scoreStore.subscribe((_score) => score = _score);
 </script>
 
 <div>
-    <b>Score</b> {score}<br>
+    <b>Score</b> {$score}<br>
     {#if highScore}
         <span>(Best: {highScore})</span>
     {/if}

@@ -1,9 +1,6 @@
 <script lang="ts">
-    import { timerStore } from "../../services/Timer.service";
-    let ticking: boolean;
+    import { timer } from "../../services/Timer.service";
     let lastClick: Date;
-
-    timerStore.subscribe((_ticking) => ticking = _ticking);
 
     const handleClick = () => {
         if (Number(new Date()) - Number(lastClick) < 300) {
@@ -16,11 +13,11 @@
             }
         }
         lastClick = new Date();
-        timerStore.set(!ticking);
+        timer.update((ticking) => !ticking);
     };
 </script>
 
-<div class="button {ticking ? 'pause': 'play'}" on:click={handleClick}></div>
+<div class="button {$timer ? 'pause': 'play'}" on:click={handleClick}></div>
 
 
 <style>

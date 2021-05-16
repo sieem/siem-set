@@ -1,14 +1,11 @@
 <script lang="ts">
-    import { cardsRemainingStore } from '../../services/Card.service';
-    let cardsRemaining: number;
-    cardsRemainingStore.subscribe((_cardsRemaining) => cardsRemaining = _cardsRemaining);
-
+    import { cardsRemaining } from '../../services/Card.service';
 </script>
 
 <div class="cardsRemaining">
-    <div class="card one">{cardsRemaining}</div>
-    <div class="card two {cardsRemaining < 3 ? 'hidden': ''}"></div>
-    <div class="card three {cardsRemaining < 3 ? 'hidden': ''}"></div>
+    <div class="card one">{$cardsRemaining}</div>
+    <div class="card two {$cardsRemaining < 3 ? 'hidden': ''}"></div>
+    <div class="card three {$cardsRemaining < 3 ? 'hidden': ''}"></div>
 </div>
 
 <style>
