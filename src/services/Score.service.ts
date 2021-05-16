@@ -19,11 +19,11 @@ export const countScore = ((activatedCardIds: string[]) => {
         }
     }
 
-    const newScore = Math.round((1 / (getCurrentTime() - getLastTimePairFound())) * pairScore * 10);
+    const newScore = (1 / (getCurrentTime() - getLastTimePairFound() + 1)) * pairScore * 10;
     const hintsGiven = getHintsGiven();
     const hintPenalty = [1, 0.5, 0];
 
-    currentScore = currentScore + (newScore * hintPenalty[hintsGiven]);
+    currentScore = currentScore + Math.round(newScore * hintPenalty[hintsGiven]);
     score.set(currentScore);
 
     setLastTimePairFound();

@@ -4,11 +4,12 @@ import { countScore } from './Score.service';
 import { handleEndOfGame } from './EndGame.service';
 
 let cards = [];
+const amountOfCards = 81;
 let _cardsOnTheTable: ICard[] = [];
 export const cardsOnTheTable = writable(_cardsOnTheTable);
 export const activatedCards = writable([]);
 const correctPairs = ['000', '111', '222', '012'];
-export const cardsRemaining = writable(81);
+export const cardsRemaining = writable(amountOfCards);
 
 const getCardId = ({ amount, color, filling, shape }: ICard): string => `${amount}${color}${filling}${shape}`;
 const getCardIds = (cards: ICard[]): string[] => cards.map((card) => getCardId(card));
@@ -22,7 +23,7 @@ export const findValidSet = (cards: ICard[]): ICard[] => {
             .map((el) => parseInt(el, 12))
             .map((el) => cards[el]);
 
-        if (new Set(cardPair).size !== 3) {
+        if (new Set(cardPair).size !== 3 || cardPair.includes(undefined)) {
             continue;
         }
 
@@ -38,7 +39,7 @@ export const findValidSet = (cards: ICard[]): ICard[] => {
 export const generateAllCards = (): void => {
     let i = -1;
 
-    cards = Array(81)
+    cards = Array(amountOfCards)
         .join('-')
         .split('-')
         .map((): ICard => {
@@ -55,9 +56,7 @@ export const generateAllCards = (): void => {
                 shape: cardCode[3],
             };
         })
-        .sort(() => 
-            Math.random() > Math.random() ? -1 : 1
-        );
+        .sort(() => Math.random() > Math.random() ? -1 : 1);
 
     _cardsOnTheTable = cards.splice(0, 12);
 
@@ -76,10 +75,6 @@ export const generateAllCards = (): void => {
 }
 
 const checkSet = (cards: ICard[]): boolean => {
-    if (cards.includes(undefined)) {
-        handleEndOfGame();
-        return true;
-    }
     const cardIds = cards.map((card) => getCardId(card));
     const cardsSplit = cardIds.map((activatedCardId) => activatedCardId.split(''));
 
@@ -100,10 +95,12 @@ activatedCards.subscribe((_activatedCards: ICard[]) => {
             _cardsOnTheTable = _cardsOnTheTable.filter((cardOnTheTable) => !getCardIds(_activatedCards).includes(getCardId(cardOnTheTable)));
 
             let newCardsOnTheTable = cards.splice(0, 3);
+            let validSetFound = false;
 
             for (let i = 0; i < 500; i++) {
                 if (findValidSet([..._cardsOnTheTable, ...newCardsOnTheTable])) {
                     i = 500;
+                    validSetFound = true;
                     continue;
                 }
                 cards = [...cards, ...newCardsOnTheTable];
@@ -114,9 +111,14 @@ activatedCards.subscribe((_activatedCards: ICard[]) => {
                 getCardIds(_activatedCards).includes(getCardId(cardOnTheTable))
                 ? newCardsOnTheTable.splice(0,1)[0]
                 : cardOnTheTable
-            );
+            )
+            .filter((el) => el !== undefined);
 
             countScore(getCardIds(_activatedCards));
+
+            if (!validSetFound) {
+                handleEndOfGame();
+            }
         }
 
         cardsRemaining.update(() => cards.length);
