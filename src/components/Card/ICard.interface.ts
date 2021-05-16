@@ -8,5 +8,6 @@ export interface ICard {
     amount: Amount,
     filling: Filling,
     shape: Shape,
-    active: boolean,
+    active?: boolean,
+    showHint?: boolean,
 }

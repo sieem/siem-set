@@ -13,7 +13,7 @@ export const cardsRemaining = writable(81);
 const getCardId = ({ amount, color, filling, shape }: ICard): string => `${amount}${color}${filling}${shape}`;
 const getCardIds = (cards: ICard[]): string[] => cards.map((card) => getCardId(card));
 
-const checkIfThereIsAValidPair = (cards: ICard[]): boolean => {
+export const findValidSet = (cards: ICard[]): ICard[] => {
     for (let i = 0; i < Math.pow(cards.length, 3); i++) {
         const cardPair = i
             .toString(12)
@@ -26,14 +26,13 @@ const checkIfThereIsAValidPair = (cards: ICard[]): boolean => {
             continue;
         }
 
-
-        if (checkCardPair(cardPair)) {
-            return true;
+        if (checkSet(cardPair)) {
+            return cardPair;
         };
     }
 
     console.log('no valid pairs found');
-    return false;
+    return null;
 }
 
 export const generateAllCards = (): void => {
@@ -54,7 +53,6 @@ export const generateAllCards = (): void => {
                 color: cardCode[1],
                 filling: cardCode[2],
                 shape: cardCode[3],
-                active: false,
             };
         })
         .sort(() => 
@@ -64,7 +62,7 @@ export const generateAllCards = (): void => {
     _cardsOnTheTable = cards.splice(0, 12);
 
     for (let i = 0; i < 500; i++) {
-        if (checkIfThereIsAValidPair(_cardsOnTheTable)) {
+        if (findValidSet(_cardsOnTheTable)) {
             i = 500;
             continue;
         }
@@ -77,7 +75,7 @@ export const generateAllCards = (): void => {
     cardsOnTheTable.set(_cardsOnTheTable);
 }
 
-const checkCardPair = (cards: ICard[]): boolean => {
+const checkSet = (cards: ICard[]): boolean => {
     if (cards.includes(undefined)) {
         handleEndOfGame();
         return true;
@@ -97,14 +95,14 @@ const checkCardPair = (cards: ICard[]): boolean => {
 
 activatedCards.subscribe((_activatedCards: ICard[]) => {
     if (_activatedCards.length === 3) {
-        if (checkCardPair(_activatedCards)) {
+        if (checkSet(_activatedCards)) {
             const oldCardsOnTheTable = _cardsOnTheTable;
             _cardsOnTheTable = _cardsOnTheTable.filter((cardOnTheTable) => !getCardIds(_activatedCards).includes(getCardId(cardOnTheTable)));
 
             let newCardsOnTheTable = cards.splice(0, 3);
 
             for (let i = 0; i < 500; i++) {
-                if (checkIfThereIsAValidPair([..._cardsOnTheTable, ...newCardsOnTheTable])) {
+                if (findValidSet([..._cardsOnTheTable, ...newCardsOnTheTable])) {
                     i = 500;
                     continue;
                 }

@@ -19,7 +19,7 @@
 	}
 </script>
 
-<div class="card {card.active ? 'active': ''}" use:tap={{ interval: 0 }} on:tap={handleClick}>
+<div class="card {card.active ? 'active': ''} {card.showHint ? 'showHint': ''}" use:tap={{ interval: 0 }} on:tap={handleClick}>
     {#each Array(card.amount + 1) as i}
 		<div
 			class="element {Color[card.color].toLowerCase()} {Filling[card.filling].toLowerCase()} {Shape[card.shape].toLowerCase()}">
@@ -29,9 +29,11 @@
 
 <style>
 	.card {
+		--border-color: #aaa;
+		--border-color-active: salmon;
 		background: white;
 		border-radius: 25px;
-		border: 5px solid #aaa;
+		border: 5px solid var(--border-color);
 
 		display: flex;
 		flex-direction: column;
@@ -41,8 +43,21 @@
 	}
 
 	.card.active {
-		border-color: salmon;
+		border-color: var(--border-color-active);
 	}
+
+	.card.showHint {
+		animation-name: showHint;
+		animation-duration: 1s;
+		animation-iteration-count: 2;
+	}
+
+	@keyframes showHint {
+		0% {background-color: white; border-color: var(--border-color);}
+		50% {background-color: var(--border-color-active); border-color: var(--border-color-active);}
+		100% {background-color: white; border-color: var(--border-color);}
+	}
+
 
 	.element {
 		height: 20%;
