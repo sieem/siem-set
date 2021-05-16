@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { tap } from '@sveltejs/gestures';
 	import { activatedCardsStore } from "../../services/Card.service";
 	import { Color } from "./Enum/Color.enum";
 	import { Filling } from "./Enum/Filling.enum";
@@ -7,7 +8,7 @@
 
 	export let card: ICard;
 
-	const handleClick = async () => {
+	const handleClick = () => {
 		card.active = !card.active;
 
 		if (card.active) {
@@ -18,7 +19,7 @@
 	}
 </script>
 
-<div class="card {card.active ? 'active': ''}" on:click={handleClick}>
+<div class="card {card.active ? 'active': ''}" use:tap on:tap={handleClick}>
     {#each Array(card.amount + 1) as i}
 		<div
 			class="element {Color[card.color].toLowerCase()} {Filling[card.filling].toLowerCase()} {Shape[card.shape].toLowerCase()}">

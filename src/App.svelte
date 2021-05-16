@@ -18,6 +18,8 @@
 	
 	generateAllCards();
 	requestWakeLock();
+
+	document.addEventListener('visibilitychange', (ev) => document.visibilityState === 'visible' ? requestWakeLock() : null);
 </script>
 
 <svelte:head>
