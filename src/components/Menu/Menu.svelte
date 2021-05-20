@@ -1,4 +1,7 @@
 <script lang="ts">
+import { gameEnded } from "../../services/EndGame.service";
+import { restartGame } from "../../services/RestartGame.service";
+
     import { timer } from "../../services/Timer.service";
     let lastClick: Date;
 
@@ -14,6 +17,13 @@
         }
         lastClick = new Date();
         timer.update((ticking) => !ticking);
+
+        let _gameEnded: boolean;
+        gameEnded.subscribe(value => _gameEnded = value)();
+
+        if (_gameEnded) {
+            restartGame();
+        }
     };
 </script>
 

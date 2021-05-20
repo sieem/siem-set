@@ -9,22 +9,23 @@
 	import CardsRemaining from './components/CardsRemaining/CardsRemaining.svelte';
 	import { generateAllCards, cardsOnTheTable } from './services/Card.service';
 	import { requestWakeLock } from './services/WakeLock.service';
-	import { setLastTimePairFound, time, timer } from './services/Timer.service';
-	import { score } from './services/Score.service';
+	import { timer } from './services/Timer.service';
 	import { retrieveState, saveState } from './services/State.service';
-	
+	import { endGameMessage, gameEnded } from './services/EndGame.service';
+	import { restartGame } from './services/RestartGame.service';
+
 	if (!retrieveState()) {
 		generateAllCards();
 	}
 
+	let _gameEnded: boolean;
+	gameEnded.subscribe((value) => _gameEnded = value)();
+	timer.set(!_gameEnded);
+
 	document.addEventListener('visibilitychange', (ev) => document.visibilityState === 'visible' ? requestWakeLock() : saveState());
 
-	const restartGame = () => {
-		time.set(0);
-		score.set(0);
-		timer.update((ticking) => !ticking);
-		setLastTimePairFound();
-		generateAllCards();
+	const restartGameHandler = () => {
+		restartGame();
 	};
 </script>
 
@@ -38,7 +39,7 @@
 		<Timer/>
 		<Menu/>
 	</header>
-	{#if $timer}
+	{#if $timer && !$gameEnded}
 		<div class="field">
 			{#each $cardsOnTheTable as card}
 				<Card {card}/>
@@ -46,8 +47,14 @@
 		</div>
 	{:else}
 		<div class="paused-container">
-			<div>Game Paused</div>
-			<div class="card" on:click={restartGame}>Restart</div>
+			{#if !$gameEnded}
+				<div>Game Paused</div>
+			{:else}
+				<div>
+					{$endGameMessage}
+				</div>
+			{/if}
+			<div class="card" on:click={restartGameHandler}>Restart</div>
 		</div>
 	{/if}
 	
@@ -106,6 +113,7 @@
 		justify-content: center;
 		gap: 10px;
 		align-items: center;
+		text-align: center;
 	}
 
 	footer {
