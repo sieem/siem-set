@@ -20,10 +20,6 @@
     }
 
     .card {
-        background: white;
-        border-radius: 10px;
-        border: 2px solid #aaa;
-        padding: 5px;
         position: absolute;
         height: 100%;
         width: 100%;

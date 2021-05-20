@@ -14,3 +14,17 @@ body {
 	background: lightblue;
 	font-family: 'Arimo', sans-serif;
 }
+
+.card {
+	--border-color: #aaa;
+	--border-width: 2px;
+    background: white;
+    border-radius: 10px;
+    border: var(--border-width) solid var(--border-color);
+    padding: 5px;
+    font-weight: bold;
+    line-height: 1.4;
+    text-align: center;
+    cursor: pointer;
+    justify-self: center;
+}

@@ -53,18 +53,6 @@
 
 
 <style>
-.card {
-    background: white;
-    border-radius: 10px;
-    border: 2px solid #aaa;
-    padding: 5px;
-    font-weight: bold;
-    line-height: 1.4;
-    text-align: center;
-    cursor: pointer;
-    justify-self: center;
-}
-
 .help-container {
     position: absolute;
     height: 100%;

@@ -29,17 +29,16 @@
 
 <style>
 	.card {
-		--border-color: #aaa;
 		--border-color-active: salmon;
-		background: white;
+		--border-width: 5px;
 		border-radius: 25px;
-		border: 5px solid var(--border-color);
 
 		display: flex;
 		flex-direction: column;
 		justify-content: space-evenly;
 		align-items: center;
 		cursor: pointer;
+		justify-self: unset;
 	}
 
 	.card.active {

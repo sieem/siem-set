@@ -9,13 +9,21 @@
 	import CardsRemaining from './components/CardsRemaining/CardsRemaining.svelte';
 	import { generateAllCards, cardsOnTheTable } from './services/Card.service';
 	import { requestWakeLock } from './services/WakeLock.service';
-	import { timer } from './services/Timer.service';
+	import { time, timer } from './services/Timer.service';
+	import { score } from './services/Score.service';
 	
 	
 	generateAllCards();
 	requestWakeLock();
 
 	document.addEventListener('visibilitychange', (ev) => document.visibilityState === 'visible' ? requestWakeLock() : null);
+
+	const restartGame = () => {
+		time.set(0);
+		score.set(0);
+		timer.update((ticking) => !ticking);
+		generateAllCards();
+	};
 </script>
 
 <svelte:head>
@@ -37,6 +45,7 @@
 	{:else}
 		<div class="paused-container">
 			<div>Game Paused</div>
+			<div class="card" on:click={restartGame}>Restart</div>
 		</div>
 	{/if}
 	
@@ -90,8 +99,11 @@
 
 
 	.paused-container {
-		display: grid;
-		place-items: center;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		gap: 10px;
+		align-items: center;
 	}
 
 	footer {

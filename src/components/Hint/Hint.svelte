@@ -36,18 +36,5 @@ cardsRemaining.subscribe(() => {
 
 
 <style>
-.card {
-    justify-self: center;
-    cursor: pointer;
-    background: white;
-    border-radius: 10px;
-    border: 2px solid #aaa;
-    padding: 5px;
-    height: 35px;
-    font-weight: bold;
-    line-height: 1.4;
-    text-align: center;
-    cursor: pointer;
-    justify-self: center;
-}
+
 </style>
