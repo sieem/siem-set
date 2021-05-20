@@ -17,10 +17,10 @@ const getCardIds = (cards: ICard[]): string[] => cards.map((card) => getCardId(c
 export const findValidSet = (cards: ICard[]): ICard[] => {
     for (let i = 0; i < Math.pow(cards.length, 3); i++) {
         const cardPair = i
-            .toString(12)
+            .toString(cards.length)
             .padStart(3, '0')
             .split('')
-            .map((el) => parseInt(el, 12))
+            .map((el) => parseInt(el, cards.length))
             .map((el) => cards[el]);
 
         if (new Set(cardPair).size !== 3 || cardPair.includes(undefined)) {
