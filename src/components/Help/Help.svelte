@@ -8,7 +8,7 @@
     };
 </script>
 
-<div class="card" on:click={handleClick}>?</div>
+<div class="card" on:click={handleClick}>Help</div>
 
 {#if showHelp}
     <div class="help-container">
@@ -58,8 +58,6 @@
     border-radius: 10px;
     border: 2px solid #aaa;
     padding: 5px;
-    height: 35px;
-    width: 30px;
     font-weight: bold;
     line-height: 1.4;
     text-align: center;
