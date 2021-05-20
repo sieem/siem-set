@@ -19,7 +19,7 @@
 	}
 </script>
 
-<div class="card {card.active ? 'active': ''} {card.showHint ? 'showHint': ''}" use:tap={{ interval: 0 }} on:tap={handleClick}>
+<div class="card {card.active ? 'active': ''} {card.showHint ? 'showHint': ''}" use:tap={{ interval: 10 }} on:tap={handleClick}>
     {#each Array(card.amount + 1) as i}
 		<div
 			class="element {Color[card.color].toLowerCase()} {Filling[card.filling].toLowerCase()} {Shape[card.shape].toLowerCase()}">
