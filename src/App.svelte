@@ -9,19 +9,21 @@
 	import CardsRemaining from './components/CardsRemaining/CardsRemaining.svelte';
 	import { generateAllCards, cardsOnTheTable } from './services/Card.service';
 	import { requestWakeLock } from './services/WakeLock.service';
-	import { time, timer } from './services/Timer.service';
+	import { setLastTimePairFound, time, timer } from './services/Timer.service';
 	import { score } from './services/Score.service';
+	import { retrieveState, saveState } from './services/State.service';
 	
-	
-	generateAllCards();
-	requestWakeLock();
+	if (!retrieveState()) {
+		generateAllCards();
+	}
 
-	document.addEventListener('visibilitychange', (ev) => document.visibilityState === 'visible' ? requestWakeLock() : null);
+	document.addEventListener('visibilitychange', (ev) => document.visibilityState === 'visible' ? requestWakeLock() : saveState());
 
 	const restartGame = () => {
 		time.set(0);
 		score.set(0);
 		timer.update((ticking) => !ticking);
+		setLastTimePairFound();
 		generateAllCards();
 	};
 </script>

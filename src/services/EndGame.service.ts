@@ -1,8 +1,10 @@
-import { getCurrentScore } from "./Score.service";
+import { score } from "./Score.service";
 import { timer } from "./Timer.service";
 
 export const handleEndOfGame = () => {
-    const currentScore = getCurrentScore();
+    let currentScore: number;
+    score.subscribe((_score) => currentScore = _score)();
+
     const highScore = Number(localStorage.getItem('highScore'));
     if (currentScore > highScore) {
         alert(`Wow, you just managed to get a new high score! You scored ${currentScore}!`);

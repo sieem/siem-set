@@ -3,12 +3,12 @@ import { writable } from 'svelte/store';
 import { countScore } from './Score.service';
 import { handleEndOfGame } from './EndGame.service';
 
-let cards = [];
-const amountOfCards = 81;
-let _cardsOnTheTable: ICard[] = [];
-export const cardsOnTheTable = writable(_cardsOnTheTable);
-export const activatedCards = writable([]);
 const correctPairs = ['000', '111', '222', '012'];
+const amountOfCards = 81;
+
+export const cards = writable([]);
+export const cardsOnTheTable = writable([]);
+export const activatedCards = writable([]);
 export const cardsRemaining = writable(amountOfCards);
 
 const getCardId = ({ amount, color, filling, shape }: ICard): string => `${amount}${color}${filling}${shape}`;
@@ -39,7 +39,7 @@ export const findValidSet = (cards: ICard[]): ICard[] => {
 export const generateAllCards = (): void => {
     let i = -1;
 
-    cards = Array(amountOfCards)
+    let _cards = Array(amountOfCards)
         .join('-')
         .split('-')
         .map((): ICard => {
@@ -58,7 +58,7 @@ export const generateAllCards = (): void => {
         })
         .sort(() => Math.random() > Math.random() ? -1 : 1);
 
-    _cardsOnTheTable = cards.splice(0, 12);
+    let _cardsOnTheTable = _cards.splice(0, 12);
 
     for (let i = 0; i < 500; i++) {
         if (findValidSet(_cardsOnTheTable)) {
@@ -66,12 +66,13 @@ export const generateAllCards = (): void => {
             continue;
         }
 
-        cards = [...cards, ..._cardsOnTheTable];
-        _cardsOnTheTable = cards.splice(0, 12);
+        _cards = [..._cards, ..._cardsOnTheTable];
+        _cardsOnTheTable = _cards.splice(0, 12);
     }
 
-    cardsRemaining.set(cards.length);
+    cardsRemaining.set(_cards.length);
     cardsOnTheTable.set(_cardsOnTheTable);
+    cards.set(_cards);
 }
 
 const checkSet = (cards: ICard[]): boolean => {
@@ -89,12 +90,18 @@ const checkSet = (cards: ICard[]): boolean => {
 }
 
 activatedCards.subscribe((_activatedCards: ICard[]) => {
+    let _cardsOnTheTable: ICard[];
+    let _cards: ICard[];
+
+    cardsOnTheTable.subscribe((value) => _cardsOnTheTable = value)()
+    cards.subscribe((value) => _cards = value)()
+
     if (_activatedCards.length === 3) {
         if (checkSet(_activatedCards)) {
             const oldCardsOnTheTable = _cardsOnTheTable;
             _cardsOnTheTable = _cardsOnTheTable.filter((cardOnTheTable) => !getCardIds(_activatedCards).includes(getCardId(cardOnTheTable)));
 
-            let newCardsOnTheTable = cards.splice(0, 3);
+            let newCardsOnTheTable = _cards.splice(0, 3);
             let validSetFound = false;
 
             for (let i = 0; i < 500; i++) {
@@ -103,8 +110,8 @@ activatedCards.subscribe((_activatedCards: ICard[]) => {
                     validSetFound = true;
                     continue;
                 }
-                cards = [...cards, ...newCardsOnTheTable];
-                newCardsOnTheTable = cards.splice(0, 3);
+                _cards = [..._cards, ...newCardsOnTheTable];
+                newCardsOnTheTable = _cards.splice(0, 3);
             }
 
             _cardsOnTheTable = oldCardsOnTheTable.map((cardOnTheTable) => 
@@ -121,9 +128,9 @@ activatedCards.subscribe((_activatedCards: ICard[]) => {
             }
         }
 
-        cardsRemaining.update(() => cards.length);
-        cardsOnTheTable.update(() => _cardsOnTheTable.map((cardOnTheTable) => ({ ...cardOnTheTable, active: false })));
-
+        cardsRemaining.set(_cards.length);
+        cardsOnTheTable.set(_cardsOnTheTable.map((cardOnTheTable) => ({ ...cardOnTheTable, active: false })));
+        cards.set(_cards);
         activatedCards.set([]);
     }
 });
