@@ -5,6 +5,7 @@ import { handleEndOfGame } from './EndGame.service';
 
 const correctPairs = ['000', '111', '222', '012'];
 const amountOfCards = 81;
+const retryAmount = 10;
 
 export const cards = writable([]);
 export const cardsOnTheTable = writable([]);
@@ -60,9 +61,9 @@ export const generateAllCards = (): void => {
 
     let _cardsOnTheTable = _cards.splice(0, 12);
 
-    for (let i = 0; i < 500; i++) {
+    for (let i = 0; i < retryAmount; i++) {
         if (findValidSet(_cardsOnTheTable)) {
-            i = 500;
+            i = retryAmount;
             continue;
         }
 
@@ -104,9 +105,9 @@ activatedCards.subscribe((_activatedCards: ICard[]) => {
             let newCardsOnTheTable = _cards.splice(0, 3);
             let validSetFound = false;
 
-            for (let i = 0; i < 500; i++) {
+            for (let i = 0; i < retryAmount; i++) {
                 if (findValidSet([..._cardsOnTheTable, ...newCardsOnTheTable])) {
-                    i = 500;
+                    i = retryAmount;
                     validSetFound = true;
                     continue;
                 }
