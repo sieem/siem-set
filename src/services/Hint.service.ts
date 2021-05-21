@@ -1,4 +1,3 @@
-let hintsGiven = 0;
+import { writable } from "svelte/store";
 
-export const getHintsGiven = () => hintsGiven;
-export const setHintsGiven = (_hintsGiven) => hintsGiven = _hintsGiven;
+export const hintsGiven = writable(0);

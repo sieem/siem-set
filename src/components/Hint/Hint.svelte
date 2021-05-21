@@ -1,12 +1,12 @@
 <script lang="ts">
 import { cardsOnTheTable, cardsRemaining, findValidSet } from "../../services/Card.service";
-import { setHintsGiven } from "../../services/Hint.service";
-let amountOfHint = 1;
+import { hintsGiven } from "../../services/Hint.service";
+let amountOfHint = 0;
 
 const handleClick = async () => {
+    amountOfHint = amountOfHint < 3 ? ++amountOfHint : 3;
     const validSet = findValidSet($cardsOnTheTable).slice(0, amountOfHint);
-    setHintsGiven(amountOfHint);
-    amountOfHint = 2;
+    hintsGiven.set(amountOfHint);
 
     cardsOnTheTable.update((_cardsOnTheTable) => _cardsOnTheTable.map((cardOnTheTable) => (
         { 
@@ -27,8 +27,8 @@ const handleClick = async () => {
 };
 
 cardsRemaining.subscribe(() => {
-    amountOfHint = 1;
-    setHintsGiven(0);
+    amountOfHint = 0;
+    hintsGiven.set(0);
 })
 </script>
 

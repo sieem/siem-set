@@ -1,5 +1,5 @@
 import { writable } from "svelte/store";
-import { getHintsGiven } from "./Hint.service";
+import { hintsGiven } from "./Hint.service";
 import { time, getLastTimePairFound, setLastTimePairFound } from "./Timer.service";
 export const score = writable(0);
 export const highScore = writable(0);
@@ -19,15 +19,16 @@ export const countScore = ((activatedCardIds: string[]) => {
         }
     }
 
-    let currentTime: number;
-    time.subscribe((_time) => currentTime = _time)();
-
     score.update((_currentScore) => {
-        const newScore = (1 / (currentTime - getLastTimePairFound() + 1)) * pairScore * 10;
-        const hintsGiven = getHintsGiven();
-        const hintPenalty = [1, 0.5, 0];
+        let currentTime: number;
+        time.subscribe((value) => currentTime = value)();
+        let _hintsGiven: number;
+        hintsGiven.subscribe((value) => _hintsGiven = value)();
 
-        return _currentScore + Math.round(newScore * hintPenalty[hintsGiven]);
+        const newScore = (1 / (currentTime - getLastTimePairFound() + 1)) * pairScore * 10;
+        const hintPenalty = [1, 2/3, 1/3, 0];
+
+        return _currentScore + Math.round(newScore * hintPenalty[_hintsGiven]);
     });
 
     setLastTimePairFound();
