@@ -2,6 +2,7 @@ import { writable } from "svelte/store";
 import { getHintsGiven } from "./Hint.service";
 import { time, getLastTimePairFound, setLastTimePairFound } from "./Timer.service";
 export const score = writable(0);
+export const highScore = writable(0);
 
 export const countScore = ((activatedCardIds: string[]) => {
     const cardsSplit = activatedCardIds.map((activatedCardId) => activatedCardId.split(''));
