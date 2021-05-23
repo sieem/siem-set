@@ -37,4 +37,3 @@ export const retrieveState = (): boolean => {
     }
 }
 
-export const clearState = () => localStorage.clear();

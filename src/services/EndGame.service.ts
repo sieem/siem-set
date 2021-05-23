@@ -1,6 +1,5 @@
 import { writable } from "svelte/store";
 import { highScore, insertScore, score } from "./Score.service";
-import { clearState } from "./State.service";
 import { time, timer } from "./Timer.service";
 
 export const endGameMessage = writable('');
@@ -27,5 +26,5 @@ export const handleEndOfGame = async () => {
     timer.set(false);
     gameEnded.set(true);
     insertScore({ score: _currentScore, time: _currentTime });
-    clearState();
+    localStorage.clear();
 };
