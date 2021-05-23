@@ -1,16 +1,9 @@
 <script lang="ts">
-    import { time, controlTimer, timer } from "../../services/Timer.service";
-    let visibilityChangePausedTheGame = false;
+    import { time, timer } from "../../services/Timer.service";
 
     document.addEventListener('visibilitychange', (ev) => {
-        if (document.visibilityState === 'hidden' && $timer) {
-            controlTimer(false);
-            visibilityChangePausedTheGame = true;
-        }
-
-        if (document.visibilityState === 'visible' && visibilityChangePausedTheGame) {
-            controlTimer(true);
-            visibilityChangePausedTheGame = false;
+        if (document.visibilityState === 'hidden') {
+            timer.set(false);
         }
     });
 

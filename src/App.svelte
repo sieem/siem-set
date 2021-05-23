@@ -11,8 +11,8 @@
 	import { requestWakeLock } from './services/WakeLock.service';
 	import { timer } from './services/Timer.service';
 	import { retrieveState, saveState } from './services/State.service';
-	import { endGameMessage, gameEnded } from './services/EndGame.service';
-	import { restartGame } from './services/RestartGame.service';
+	import { gameEnded } from './services/EndGame.service';
+import PausedContainer from './components/PausedContainer/PausedContainer.svelte';
 
 	if (!retrieveState()) {
 		generateAllCards();
@@ -23,10 +23,6 @@
 	timer.set(!_gameEnded);
 
 	document.addEventListener('visibilitychange', (ev) => document.visibilityState === 'visible' ? requestWakeLock() : saveState());
-
-	const restartGameHandler = () => {
-		restartGame();
-	};
 </script>
 
 <svelte:head>
@@ -46,16 +42,7 @@
 			{/each}
 		</div>
 	{:else}
-		<div class="paused-container">
-			{#if !$gameEnded}
-				<div>Game Paused</div>
-			{:else}
-				<div>
-					{$endGameMessage}
-				</div>
-			{/if}
-			<div class="card" on:click={restartGameHandler}>Restart</div>
-		</div>
+		<PausedContainer/>
 	{/if}
 	
 	<footer>
@@ -104,16 +91,6 @@
 			grid-template-columns: repeat(4, 1fr);
 			grid-template-rows: repeat(3, 1fr);
 		}
-	}
-
-
-	.paused-container {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		gap: 10px;
-		align-items: center;
-		text-align: center;
 	}
 
 	footer {

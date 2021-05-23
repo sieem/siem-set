@@ -5,7 +5,7 @@ export const time = writable(0);
 let _timer;
 let lastTimePairFound = 0;
 
-export const controlTimer = (play: boolean) =>
+const controlTimer = (play: boolean) =>
     play
         ? _timer = setInterval(() => time.update((_time) => ++_time), 1000)
         : clearInterval(_timer);
