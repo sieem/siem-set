@@ -1,8 +1,10 @@
 import { writable } from "svelte/store";
+import { database } from "./Database.service";
 import { hintsGiven } from "./Hint.service";
 import { time, getLastTimePairFound, setLastTimePairFound } from "./Timer.service";
 export const score = writable(0);
-export const highScore = writable(0);
+export const scoreBoard = writable([]);
+export const highScore = writable({ score: 0, time: 0 });
 
 export const countScore = ((activatedCardIds: string[]) => {
     const cardsSplit = activatedCardIds.map((activatedCardId) => activatedCardId.split(''));
@@ -33,3 +35,18 @@ export const countScore = ((activatedCardIds: string[]) => {
 
     setLastTimePairFound();
 });
+
+
+export const insertScore = async ({ score, time }) => {
+    await database.table('scores').put({ score, time, date: Date.now() });
+    updateScoreBoardStore();
+};
+
+const updateScoreBoardStore = async () => {
+    scoreBoard.set(await database.table('scores').orderBy('score').reverse().toArray());
+    getLatestHighScore();
+};
+
+export const getLatestHighScore = async () => {
+    highScore.set(await database.table('scores').orderBy('score').reverse().first());
+}

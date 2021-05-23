@@ -1,11 +1,12 @@
 <script lang="ts">
+    import { timeDisplayer } from "../../helper/timeDisplayer.helper";
     import { highScore, score } from "../../services/Score.service";
 </script>
 
 <div>
     <b>Score</b> {$score}<br>
     {#if $highScore}
-        <span>(Best: {$highScore})</span>
+        <span>(Best: {$highScore.score} in {timeDisplayer($highScore.time)})</span>
     {/if}
 </div>
 

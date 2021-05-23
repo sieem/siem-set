@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { timeDisplayer } from "../../helper/timeDisplayer.helper";
     import { time, timer } from "../../services/Timer.service";
 
     document.addEventListener('visibilitychange', (ev) => {
@@ -7,7 +8,6 @@
         }
     });
 
-    const timeDisplayer = (time) => `${Math.floor(time/60)}:${String(time % 60).padStart(2, '0')}`;
 </script>
 
 <div>{timeDisplayer($time)}</div>
