@@ -42,8 +42,8 @@ export const insertScore = async ({ score, time }) => {
     updateScoreBoardStore();
 };
 
-const updateScoreBoardStore = async () => {
-    scoreBoard.set(await database.table('scores').orderBy('score').reverse().toArray());
+export const updateScoreBoardStore = async () => {
+    scoreBoard.set(await database.table('scores').orderBy('score').limit(10).reverse().toArray());
     getLatestHighScore();
 };
 

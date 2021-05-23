@@ -1,7 +1,9 @@
 <script lang="ts">
 import { endGameMessage, gameEnded } from "../../services/EndGame.service";
 import { restartGame } from "../../services/RestartGame.service";
+import { scoreBoard } from "../../services/Score.service";
 import { timer } from "../../services/Timer.service";
+import ScoreBoard from "../ScoreBoard/ScoreBoard.svelte";
 
 const restartGameHandler = () => {
     restartGame();
@@ -15,7 +17,7 @@ const continueHandler = () => {
 
 <div class="paused-container">
     {#if !$gameEnded}
-        <div>Game Paused</div>
+        <div>Game paused</div>
     {:else}
         <div>
             {$endGameMessage}
@@ -25,6 +27,7 @@ const continueHandler = () => {
         <div class="card" on:click={continueHandler}>Continue</div>
     {/if}
     <div class="card" on:click={restartGameHandler}>Restart</div>
+    <ScoreBoard/>
 </div>
 <style>
 .paused-container {
