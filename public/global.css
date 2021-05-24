@@ -10,6 +10,11 @@
 	-webkit-tap-highlight-color: transparent;
 }
 
+html,
+body {
+	height: 100%;
+}
+
 body {
 	background: lightblue;
 	font-family: 'Arimo', sans-serif;
