@@ -60,7 +60,7 @@
     top: 0;
     left: 0;
     background: #ADD8E6E6;
-    z-index: calc(2147483647 + 2); /* Above play/pause button */
+    z-index: 30;
     padding: 50px;
     overflow: auto;
 }

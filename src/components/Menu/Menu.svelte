@@ -1,21 +1,9 @@
 <script lang="ts">
-import { gameEnded } from "../../services/EndGame.service";
-import { restartGame } from "../../services/RestartGame.service";
-
+    import { gameEnded } from "../../services/EndGame.service";
+    import { restartGame } from "../../services/RestartGame.service";
     import { timer } from "../../services/Timer.service";
-    let lastClick: Date;
 
     const handleClick = () => {
-        if (Number(new Date()) - Number(lastClick) < 300) {
-            if (localStorage.getItem('debugMode') === 'true') {
-                localStorage.setItem('debugMode', 'false');
-                screenLog.destroy();
-            } else {
-                localStorage.setItem('debugMode', 'true');
-                screenLog.init();
-            }
-        }
-        lastClick = new Date();
         timer.update((ticking) => !ticking);
 
         let _gameEnded: boolean;
@@ -45,7 +33,7 @@ div {
     box-sizing: border-box;
     cursor: pointer;
     position: relative;
-    z-index: calc(2147483647 + 1); /* higher than screenlog */
+    z-index: 10;
 }
 
 .button.play {
