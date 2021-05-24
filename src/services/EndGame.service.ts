@@ -12,7 +12,7 @@ export const handleEndOfGame = async () => {
 
     score.subscribe((value) => _currentScore = value)();
     time.subscribe((value) => _currentTime = value)();
-    highScore.subscribe((value) => _highScore = value)();
+    highScore.subscribe((value) => _highScore = value ?? { score: 0, time: 0 })();
 
     if (_currentScore === _highScore.score) {
         endGameMessage.set(`Wow, you just managed to score the same as your high score! 😏`);
