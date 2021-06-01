@@ -29,7 +29,6 @@
 
 <style>
 	.card {
-		--border-color-active: salmon;
 		--border-width: 5px;
 		border-radius: 25px;
 

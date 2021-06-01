@@ -3,8 +3,9 @@ import { database } from "./Database.service";
 import { hintsGiven } from "./Hint.service";
 import { time, getLastTimePairFound, setLastTimePairFound } from "./Timer.service";
 export const score = writable(0);
-export const scoreBoard = writable([]);
+export const scoreBoard = writable({ score: [], time: []});
 export const highScore = writable({ score: 0, time: 0 });
+export const lastRecordDateTime = writable(0);
 
 export const countScore = ((activatedCardIds: string[]) => {
     const cardsSplit = activatedCardIds.map((activatedCardId) => activatedCardId.split(''));
@@ -38,12 +39,17 @@ export const countScore = ((activatedCardIds: string[]) => {
 
 
 export const insertScore = async ({ score, time }) => {
-    await database.table('scores').put({ score, time, date: Date.now() });
+    const _lastRecordDateTime = Date.now();
+    lastRecordDateTime.set(_lastRecordDateTime);
+    await database.table('scores').put({ score, time, date: _lastRecordDateTime});
     updateScoreBoardStore();
 };
 
 export const updateScoreBoardStore = async () => {
-    scoreBoard.set(await database.table('scores').orderBy('score').limit(10).reverse().toArray());
+    scoreBoard.set({
+        score: await database.table('scores').orderBy('score').limit(10).reverse().toArray(),
+        time: await database.table('scores').orderBy('time').limit(10).toArray(),
+    });
     getLatestHighScore();
 };
 

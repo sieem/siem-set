@@ -20,6 +20,10 @@ body {
 	font-family: 'Arimo', sans-serif;
 }
 
+:root {
+	--border-color-active: salmon;
+}
+
 .card {
 	--border-color: #aaa;
 	--border-width: 2px;
