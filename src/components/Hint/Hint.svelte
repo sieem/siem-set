@@ -1,4 +1,6 @@
 <script lang="ts">
+import { sleep } from "../../helper/sleep.helper";
+
 import { cardsOnTheTable, cardsRemaining, findValidSet } from "../../services/Card.service";
 import { hintsGiven } from "../../services/Hint.service";
 let amountOfHint = 0;
@@ -16,7 +18,7 @@ const handleClick = async () => {
         }
     )));
 
-    await new Promise((resolve) => setTimeout(() => resolve(''), 2000));
+    await sleep(2000);
 
     cardsOnTheTable.update((_cardsOnTheTable) => _cardsOnTheTable.map((cardOnTheTable) => (
         { 

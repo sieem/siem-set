@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { tap } from 'svelte-hammer';
-	import { activatedCards } from "../../services/Card.service";
+	import { activatedCards, wrongSetFound } from "../../services/Card.service";
 	import { Color } from "./Enum/Color.enum";
 	import { Filling } from "./Enum/Filling.enum";
 	import { Shape } from "./Enum/Shape.enum";
@@ -19,7 +19,7 @@
 	}
 </script>
 
-<div class="card {card.active ? 'active': ''} {card.showHint ? 'showHint': ''}" use:tap={{ interval: 10 }} on:tap={handleClick}>
+<div class="card {card.active ? 'active': ''} {card.showHint ? 'showHint': ''} {$wrongSetFound ? 'wrongSet': ''}" use:tap={{ interval: 10 }} on:tap={handleClick}>
     {#each Array(card.amount + 1) as i}
 		<div
 			class="element {Color[card.color].toLowerCase()} {Filling[card.filling].toLowerCase()} {Shape[card.shape].toLowerCase()}">
@@ -51,12 +51,36 @@
 		animation-iteration-count: 2;
 	}
 
+	.card.active.wrongSet {
+		animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+		transform: translate3d(0, 0, 0);
+		backface-visibility: hidden;
+		perspective: 1000px;
+	}
+
 	@keyframes showHint {
 		0% {background-color: white; border-color: var(--border-color);}
 		50% {background-color: var(--border-color-active); border-color: var(--border-color-active);}
 		100% {background-color: white; border-color: var(--border-color);}
 	}
 
+	@keyframes shake {
+		10%, 90% {
+			transform: translate3d(-1px, 0, 0);
+		}
+		
+		20%, 80% {
+			transform: translate3d(2px, 0, 0);
+		}
+
+		30%, 50%, 70% {
+			transform: translate3d(-4px, 0, 0);
+		}
+
+		40%, 60% {
+			transform: translate3d(4px, 0, 0);
+		}
+	}
 
 	.element {
 		height: 20%;

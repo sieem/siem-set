@@ -2,6 +2,7 @@ import type { ICard } from '../components/Card/ICard.interface';
 import { writable } from 'svelte/store';
 import { countScore } from './Score.service';
 import { handleEndOfGame } from './EndGame.service';
+import { sleep } from '../helper/sleep.helper';
 
 const correctPairs = ['000', '111', '222', '012'];
 const amountOfCards = 81;
@@ -11,6 +12,7 @@ export const cards = writable([]);
 export const cardsOnTheTable = writable([]);
 export const activatedCards = writable([]);
 export const cardsRemaining = writable(amountOfCards);
+export const wrongSetFound = writable(false);
 
 const getCardId = ({ amount, color, filling, shape }: ICard): string => `${amount}${color}${filling}${shape}`;
 const getCardIds = (cards: ICard[]): string[] => cards.map((card) => getCardId(card));
@@ -90,7 +92,7 @@ const checkSet = (cards: ICard[]): boolean => {
     return true;
 }
 
-activatedCards.subscribe((_activatedCards: ICard[]) => {
+activatedCards.subscribe(async (_activatedCards: ICard[]) => {
     let _cardsOnTheTable: ICard[];
     let _cards: ICard[];
 
@@ -127,6 +129,10 @@ activatedCards.subscribe((_activatedCards: ICard[]) => {
             if (!validSetFound) {
                 handleEndOfGame();
             }
+        } else {
+            wrongSetFound.set(true);
+            await sleep(820); // wait for the animation to end
+            wrongSetFound.set(false);
         }
 
         cardsRemaining.set(_cards.length);
