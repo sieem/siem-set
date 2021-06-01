@@ -38,6 +38,10 @@
     counter-reset: row;
 }
 
+.card {
+    cursor: unset;
+}
+
 .table {
     display: grid;
     gap: 5px;
@@ -63,6 +67,7 @@
     cursor: pointer;
 }
 
+.table .row.tabs .tab:hover,
 .table .row.tabs .tab.active {
     border-color: var(--border-color-active);
 }
