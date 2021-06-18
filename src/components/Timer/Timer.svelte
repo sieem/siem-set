@@ -1,5 +1,6 @@
 <script lang="ts">
     import { timeDisplayer } from "../../helper/timeDisplayer.helper";
+    import { relaxedMode } from "../../services/RelaxedMode.service";
     import { time, timer } from "../../services/Timer.service";
 
     document.addEventListener('visibilitychange', (ev) => {
@@ -10,7 +11,11 @@
 
 </script>
 
-<div>{timeDisplayer($time)}</div>
+<div>
+    {#if !$relaxedMode}
+        {timeDisplayer($time)}
+    {/if}
+</div>
 
 <style>
 div {

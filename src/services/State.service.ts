@@ -1,5 +1,6 @@
 import { cards, cardsOnTheTable, cardsRemaining } from "./Card.service";
 import { gameEnded } from "./EndGame.service";
+import { relaxedMode } from "./RelaxedMode.service";
 import { lastRecordDateTime, score } from "./Score.service";
 import { time } from "./Timer.service";
 
@@ -11,7 +12,7 @@ export const saveState = (): void => {
     cardsOnTheTable.subscribe((_cardsOnTheTable) => localStorage.setItem('cardsOnTheTable', JSON.stringify(_cardsOnTheTable)))();
     cards.subscribe((_cards) => localStorage.setItem('cards', JSON.stringify(_cards)))();
     lastRecordDateTime.subscribe((_lastRecordDateTime) => localStorage.setItem('lastRecordDateTime', String(_lastRecordDateTime)))();
-    lastRecordDateTime.subscribe((_lastRecordDateTime) => console.log(_lastRecordDateTime))();
+    relaxedMode.subscribe((_relaxedMode) => localStorage.setItem('relaxedMode', String(_relaxedMode)))();
 }
 
 export const retrieveState = (): boolean => {
@@ -22,8 +23,9 @@ export const retrieveState = (): boolean => {
     const _cardsOnTheTable = JSON.parse(localStorage.getItem('cardsOnTheTable'));
     const _cards = JSON.parse(localStorage.getItem('cards'));
     const _lastRecordDateTime = Number(localStorage.getItem('lastRecordDateTime'));
-
-    if (![_time, _score, _gameEnded, _cardsRemaining, _cardsOnTheTable, _cards, _lastRecordDateTime].includes(null)) {
+    const _relaxedMode = localStorage.getItem('relaxedMode') === 'true';
+    
+    if (![_time, _score, _gameEnded, _cardsRemaining, _cardsOnTheTable, _cards, _lastRecordDateTime, _relaxedMode].includes(null)) {
         time.set(_time);
         score.set(_score);
         cardsRemaining.set(_cardsRemaining);
@@ -31,6 +33,7 @@ export const retrieveState = (): boolean => {
         cardsOnTheTable.set(_cardsOnTheTable);
         cards.set(_cards);
         lastRecordDateTime.set(_lastRecordDateTime);
+        relaxedMode.set(_relaxedMode);
 
         return true;
     } else {
