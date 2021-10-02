@@ -13,7 +13,7 @@
 	import { retrieveState, saveState } from './services/State.service';
 	import { gameEnded } from './services/EndGame.service';
 	import PausedContainer from './components/PausedContainer/PausedContainer.svelte';
-	import { getLatestHighScore, updateScoreBoardStore } from './services/Score.service';
+	import { setLatestHighScore, setPlayedGames, updateScoreBoardStore } from './services/Score.service';
 
 	let _gameEnded: boolean;
 
@@ -21,8 +21,9 @@
 		generateAllCards();
 	}
 
-	getLatestHighScore();
 	updateScoreBoardStore();
+	setLatestHighScore();
+	setPlayedGames();
 
 	gameEnded.subscribe((value) => _gameEnded = value)();
 	timer.set(!_gameEnded);

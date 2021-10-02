@@ -2,6 +2,7 @@
 import { gameEnded } from "../../services/EndGame.service";
 import { relaxedMode } from "../../services/RelaxedMode.service";
 import { restartGame } from "../../services/RestartGame.service";
+import { playedGames } from "../../services/Score.service";
 import { timer } from "../../services/Timer.service";
 import ScoreBoard from "../ScoreBoard/ScoreBoard.svelte";
 
@@ -20,7 +21,13 @@ const onChange = () => {
 </script>
 
 <div class="paused-container">
-    <h3>{$gameEnded ? 'Game over' : 'Game paused'}</h3>
+    <div>
+            <h3>{$gameEnded ? 'Game over' : 'Game paused'}</h3>
+            {#if $playedGames > 0}
+                <div class="playedGames">Games played: {$playedGames}</div>
+            {/if}
+    </div>
+
     {#if !$relaxedMode}
                 <ScoreBoard/>
     {/if}
@@ -49,5 +56,10 @@ const onChange = () => {
     display: flex;
     justify-content: space-evenly;
     width: 100%;
+}
+
+.playedGames {
+    font-style: italic;
+    font-size: 0.75rem;
 }
 </style>

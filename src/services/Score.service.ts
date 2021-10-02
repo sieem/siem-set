@@ -5,6 +5,7 @@ import { time, getLastTimePairFound, setLastTimePairFound } from "./Timer.servic
 export const score = writable(0);
 export const scoreBoard = writable({ score: [], time: []});
 export const highScore = writable({ score: 0, time: 0 });
+export const playedGames = writable(0);
 export const lastRecordDateTime = writable(0);
 
 export const countScore = ((activatedCardIds: string[]) => {
@@ -42,7 +43,10 @@ export const insertScore = async ({ score, time }) => {
     const _lastRecordDateTime = Date.now();
     lastRecordDateTime.set(_lastRecordDateTime);
     await database.table('scores').put({ score, time, date: _lastRecordDateTime});
+
     updateScoreBoardStore();
+    setLatestHighScore();
+    setPlayedGames();
 };
 
 export const updateScoreBoardStore = async () => {
@@ -50,9 +54,7 @@ export const updateScoreBoardStore = async () => {
         score: await database.table('scores').orderBy('score').limit(10).reverse().toArray(),
         time: await database.table('scores').orderBy('time').limit(10).toArray(),
     });
-    getLatestHighScore();
 };
 
-export const getLatestHighScore = async () => {
-    highScore.set(await database.table('scores').orderBy('score').reverse().first());
-}
+export const setLatestHighScore = async () => highScore.set(await database.table('scores').orderBy('score').reverse().first());
+export const setPlayedGames = async () => playedGames.set(await database.table('scores').count());
