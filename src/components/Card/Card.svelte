@@ -19,7 +19,7 @@
 	}
 </script>
 
-<div class="card {card.active ? 'active': ''} {card.showHint ? 'showHint': ''} {$wrongSetFound ? 'wrongSet': ''}" use:tap={{ interval: 10 }} on:tap={handleClick}>
+<div class="card {card.active ? 'active': ''} {card.showHint ? 'showHint': ''} {$wrongSetFound && card.active ? 'wrongSet': ''}" use:tap on:tap={handleClick}>
     {#each Array(card.amount + 1) as i}
 		<div
 			class="element {Color[card.color].toLowerCase()} {Filling[card.filling].toLowerCase()} {Shape[card.shape].toLowerCase()}">
@@ -50,7 +50,7 @@
 		animation-iteration-count: 2;
 	}
 
-	.card.active.wrongSet {
+	.card.wrongSet {
 		animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
 		transform: translate3d(0, 0, 0);
 		backface-visibility: hidden;
