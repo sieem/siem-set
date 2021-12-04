@@ -14,8 +14,12 @@
 	import { gameEnded } from './services/EndGame.service';
 	import PausedContainer from './components/PausedContainer/PausedContainer.svelte';
 	import { setLatestHighScore, setPlayedGames, updateScoreBoardStore } from './services/Score.service';
+	import { activateServiceWorker, showInstallDialog } from './services/ActivateServiceWorker.service';
+import InstallDialog from './components/InstallDialog/InstallDialog.svelte';
 
 	let _gameEnded: boolean;
+
+	activateServiceWorker();
 
 	if (!retrieveState()) {
 		generateAllCards();
@@ -55,7 +59,11 @@
 		<CardsRemaining/>
 		<Hint/>
 		<Help/>
-		<Social/>
+		{#if $showInstallDialog}
+			<InstallDialog/>
+		{:else}
+			<Social/>
+		{/if}
 	</footer>
 </div>
 
