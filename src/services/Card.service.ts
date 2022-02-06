@@ -5,7 +5,7 @@ import { handleEndOfGame } from './EndGame.service';
 import { sleep } from '../helper/sleep.helper';
 
 const correctPairs = ['000', '111', '222', '012'];
-const amountOfCards = 81;
+const amountOfCards = globalThis.isProduction ? 81 : 27;
 const retryAmount = 10;
 
 export const cards = writable([]);
@@ -126,6 +126,10 @@ activatedCards.subscribe(async (_activatedCards: ICard[]) => {
 
             countScore(getCardIds(_activatedCards));
 
+            cardsRemaining.set(_cards.length);
+            cardsOnTheTable.set(_cardsOnTheTable.map((cardOnTheTable) => ({ ...cardOnTheTable, active: false })));
+            cards.set(_cards);
+
             if (!validSetFound) {
                 handleEndOfGame();
             }
@@ -135,9 +139,6 @@ activatedCards.subscribe(async (_activatedCards: ICard[]) => {
             wrongSetFound.set(false);
         }
 
-        cardsRemaining.set(_cards.length);
-        cardsOnTheTable.set(_cardsOnTheTable.map((cardOnTheTable) => ({ ...cardOnTheTable, active: false })));
-        cards.set(_cards);
         activatedCards.set([]);
     }
 });

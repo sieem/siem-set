@@ -1,10 +1,10 @@
 import { writable } from "svelte/store";
-import { database } from "./Database.service";
+import { database, ScoresTables } from './Database.service';
 import { hintsGiven } from "./Hint.service";
 import { time, getLastTimePairFound, setLastTimePairFound } from "./Timer.service";
 export const score = writable(0);
-export const scoreBoard = writable({ score: [], time: []});
-export const highScore = writable({ score: 0, time: 0 });
+export const scoreBoard = writable<{score: ScoresTables[], time: ScoresTables[]}>({ score: [], time: []});
+export const highScore = writable<Pick<ScoresTables, 'score' | 'time'>>({ score: 0, time: 0 });
 export const playedGames = writable(0);
 export const lastRecordDateTime = writable(0);
 
@@ -39,10 +39,10 @@ export const countScore = ((activatedCardIds: string[]) => {
 });
 
 
-export const insertScore = async ({ score, time }) => {
+export const insertScore = async ({ score, time, unusedCards }: Pick<ScoresTables, 'score' | 'time' | 'unusedCards'>) => {
     const _lastRecordDateTime = Date.now();
     lastRecordDateTime.set(_lastRecordDateTime);
-    await database.table('scores').put({ score, time, date: _lastRecordDateTime});
+    await database.table('scores').put({ score, time, unusedCards, date: _lastRecordDateTime});
 
     updateScoreBoardStore();
     setLatestHighScore();

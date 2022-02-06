@@ -29,7 +29,7 @@ const onChange = () => {
     </div>
 
     {#if !$relaxedMode}
-                <ScoreBoard/>
+        <ScoreBoard/>
     {/if}
     <div class="row">
         <div class="card" on:click={restartGameHandler}>Restart</div>

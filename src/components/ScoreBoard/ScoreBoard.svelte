@@ -20,12 +20,14 @@
                 <div>Score</div>
                 <div>Time</div>
                 <div>Date</div>
+                <div>Unused cards</div>
             </div>
             {#each $scoreBoard[activeTab] as row}
                 <div class="row {$lastRecordDateTime === row.date ? 'active' : ''}">
                     <div>{row.score}</div>
                     <div>{timeDisplayer(row.time)}</div>
                     <div>{dateDisplayer(row.date)}</div>
+                    <div>{row.unusedCards ?? 'Unknown'}</div>
                 </div>
             {/each}
         </div>
@@ -51,7 +53,7 @@
 .table .row {
     display: grid;
     gap: 20px;
-    grid-template-columns: 30px 1fr 1fr 1fr 30px;
+    grid-template-columns: 30px 1fr 1fr 1fr 1fr 30px;
     font-size: 80%;
     white-space: nowrap;
 }
