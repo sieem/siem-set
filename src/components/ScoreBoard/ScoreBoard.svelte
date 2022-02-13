@@ -1,14 +1,14 @@
 <script lang="ts">
     import { dateDisplayer } from "../../helper/dateDisplayer.helper";
     import { timeDisplayer } from "../../helper/timeDisplayer.helper";
-    import { lastRecordDateTime, scoreBoard } from "../../services/Score.service";
+    import { lastRecordDateTime$, scoreBoard$ } from "../../services/Score.service";
 
     let activeTab: 'score' | 'time' = 'score';
 
     const changeActiveTab = (tab: 'score' | 'time') => activeTab = tab;
 </script>
 
-{#if $scoreBoard[activeTab].length}
+{#if $scoreBoard$[activeTab].length}
     <div class="card">
         <div class="table">
             <div class="row header tabs">
@@ -22,8 +22,8 @@
                 <div>Date</div>
                 <div>Unused cards</div>
             </div>
-            {#each $scoreBoard[activeTab] as row}
-                <div class="row {$lastRecordDateTime === row.date ? 'active' : ''}">
+            {#each $scoreBoard$[activeTab] as row}
+                <div class="row {$lastRecordDateTime$ === row.date ? 'active' : ''}">
                     <div>{row.score}</div>
                     <div>{timeDisplayer(row.time)}</div>
                     <div>{dateDisplayer(row.date)}</div>

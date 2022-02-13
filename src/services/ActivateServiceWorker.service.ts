@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-export const showInstallDialog = writable(false);
+export const showInstallDialog$ = writable(false);
 
 export const activateServiceWorker = () => {
   if ('serviceWorker' in navigator) {
@@ -13,7 +13,7 @@ export const activateServiceWorker = () => {
             installingWorker.onstatechange = () => {
               if (installingWorker.state === 'installed') {
                 console.log('%c[activate-service-worker.js] New or updated content is available', 'color: #00ABD2');
-                showInstallDialog.set(true);
+                showInstallDialog$.set(true);
               }
             };
           };

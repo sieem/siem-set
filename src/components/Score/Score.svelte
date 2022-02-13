@@ -1,14 +1,14 @@
 <script lang="ts">
     import { timeDisplayer } from "../../helper/timeDisplayer.helper";
-    import { relaxedMode } from "../../services/RelaxedMode.service";
-    import { highScore, score } from "../../services/Score.service";
+    import { relaxedMode$ } from "../../services/RelaxedMode.service";
+    import { highScore$, score$ } from "../../services/Score.service";
 </script>
 
 <div>
-    {#if !$relaxedMode}
-        <b>Score</b> {$score}<br>
-        {#if $highScore}
-            <span>(Best: {$highScore.score} in {timeDisplayer($highScore.time)})</span>
+    {#if !$relaxedMode$}
+        <b>Score</b> {$score$}<br>
+        {#if $highScore$}
+            <span>(Best: {$highScore$.score$} in {timeDisplayer($highScore$.time)})</span>
         {/if}
     {/if}
 </div>

@@ -1,10 +1,10 @@
 <script lang="ts">
-    import { timer } from "../../services/Timer.service";
+    import { timer$ } from "../../services/Timer.service";
     let showHelp = false;
 
     const handleClick = () => {
         showHelp = !showHelp;
-        timer.set(!showHelp);
+        timer$.set(!showHelp);
     };
 </script>
 

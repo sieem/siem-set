@@ -1,16 +1,16 @@
 import { writable } from "svelte/store";
-export const timer = writable(true);
-export const time = writable(0);
+export const timer$ = writable(true);
+export const time$ = writable(0);
 
-let _timer;
+let timer: NodeJS.Timeout;
 let lastTimePairFound = 0;
 
 const controlTimer = (play: boolean) =>
     play
-        ? _timer = setInterval(() => time.update((_time) => ++_time), 1000)
-        : clearInterval(_timer);
+        ? timer = setInterval(() => time$.update((time) => ++time), 1000)
+        : clearInterval(timer);
 
-export const setLastTimePairFound = () => time.subscribe((_time) => lastTimePairFound = _time)();
+export const setLastTimePairFound = () => time$.subscribe((time) => lastTimePairFound = time)();
 export const getLastTimePairFound = (): number => lastTimePairFound;
 
-timer.subscribe((play: boolean) => controlTimer(play));
+timer$.subscribe((play: boolean) => controlTimer(play));

@@ -7,17 +7,17 @@
 	import Hint from './components/Hint/Hint.svelte';
 	import Social from './components/Social/Social.svelte';
 	import CardsRemaining from './components/CardsRemaining/CardsRemaining.svelte';
-	import { generateAllCards, cardsOnTheTable } from './services/Card.service';
+	import { generateAllCards, cardsOnTheTable$ } from './services/Card.service';
 	import { requestWakeLock } from './services/WakeLock.service';
-	import { timer } from './services/Timer.service';
+	import { timer$ } from './services/Timer.service';
 	import { retrieveState, saveState } from './services/State.service';
-	import { gameEnded } from './services/EndGame.service';
+	import { gameEnded$ } from './services/EndGame.service';
 	import PausedContainer from './components/PausedContainer/PausedContainer.svelte';
 	import { setLatestHighScore, setPlayedGames, updateScoreBoardStore } from './services/Score.service';
-	import { activateServiceWorker, showInstallDialog } from './services/ActivateServiceWorker.service';
+	import { activateServiceWorker, showInstallDialog$ } from './services/ActivateServiceWorker.service';
 import InstallDialog from './components/InstallDialog/InstallDialog.svelte';
 
-	let _gameEnded: boolean;
+	let gameEnded: boolean;
 
 	activateServiceWorker();
 
@@ -29,8 +29,8 @@ import InstallDialog from './components/InstallDialog/InstallDialog.svelte';
 	setLatestHighScore();
 	setPlayedGames();
 
-	gameEnded.subscribe((value) => _gameEnded = value)();
-	timer.set(!_gameEnded);
+	gameEnded$.subscribe((value) => gameEnded = value)();
+	timer$.set(!gameEnded);
 
 	document.addEventListener('visibilitychange', (ev) => document.visibilityState === 'visible' ? requestWakeLock() : saveState());
 </script>
@@ -45,9 +45,9 @@ import InstallDialog from './components/InstallDialog/InstallDialog.svelte';
 		<Timer/>
 		<Menu/>
 	</header>
-	{#if $timer && !$gameEnded}
+	{#if $timer$ && !$gameEnded$}
 		<div class="field">
-			{#each $cardsOnTheTable as card}
+			{#each $cardsOnTheTable$ as card}
 				<Card {card}/>
 			{/each}
 		</div>
@@ -59,7 +59,7 @@ import InstallDialog from './components/InstallDialog/InstallDialog.svelte';
 		<CardsRemaining/>
 		<Hint/>
 		<Help/>
-		{#if $showInstallDialog}
+		{#if $showInstallDialog$}
 			<InstallDialog/>
 		{:else}
 			<Social/>
