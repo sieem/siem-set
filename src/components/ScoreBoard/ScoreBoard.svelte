@@ -48,6 +48,8 @@
     display: grid;
     gap: 5px;
     margin: 5px;
+    max-height: 500px;
+    overflow: auto;
 }
 
 .table .row {

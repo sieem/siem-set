@@ -51,8 +51,8 @@ export const insertScore = async ({ score, time, unusedCards }: Pick<ScoresTable
 
 export const updateScoreBoardStore = async () => {
     scoreBoard$.set({
-        score: await database.table('scores').orderBy('score').limit(10).reverse().toArray(),
-        time: await database.table('scores').orderBy('time').limit(10).toArray(),
+        score: await database.table('scores').orderBy('score').limit(50).reverse().toArray(),
+        time: await database.table('scores').orderBy('time').limit(50).toArray(),
     });
 };
 
