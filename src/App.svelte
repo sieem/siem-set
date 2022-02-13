@@ -57,7 +57,11 @@ import InstallDialog from './components/InstallDialog/InstallDialog.svelte';
 	
 	<footer>
 		<CardsRemaining/>
-		<Hint/>
+		{#if $timer$ && !$gameEnded$}
+			<Hint/>
+		{:else}
+			<div></div>
+		{/if}
 		<Help/>
 		{#if $showInstallDialog$}
 			<InstallDialog/>
