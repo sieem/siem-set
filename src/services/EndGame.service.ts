@@ -9,12 +9,10 @@ export const gameEnded$ = writable(false);
 export const handleEndOfGame = async () => {
     let currentScore: ScoresTables['score'];
     let currentTime: ScoresTables['time'];
-    let highScore: Pick<ScoresTables, 'score' | 'time'>;
     let unusedCards: ScoresTables['unusedCards'];
 
     score$.subscribe((value) => currentScore = value)();
     time$.subscribe((value) => currentTime = value)();
-    highScore$.subscribe((value) => highScore = value ?? { score: 0, time: 0 })();
     cardsOnTheTable$.subscribe((value) => unusedCards = value.length)();
 
     timer$.set(false);
