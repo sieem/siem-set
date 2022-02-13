@@ -10,4 +10,5 @@ export interface ICard {
     shape: Shape,
     active?: boolean,
     showHint?: boolean,
+    wrong?: boolean,
 }

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { tap } from 'svelte-hammer';
-	import { activatedCards, wrongSetFound } from "../../services/Card.service";
+	import { activatedCards } from "../../services/Card.service";
 	import { Color } from "./Enum/Color.enum";
 	import { Filling } from "./Enum/Filling.enum";
 	import { Shape } from "./Enum/Shape.enum";
@@ -19,7 +19,7 @@
 	}
 </script>
 
-<div class="card {card.active ? 'active': ''} {card.showHint ? 'showHint': ''} {$wrongSetFound && card.active ? 'wrongSet': ''}" use:tap on:tap={handleClick}>
+<div class="card {card.active ? 'active': ''} {card.showHint ? 'showHint': ''} {card.wrong ? 'wrongSet': ''}" use:tap on:tap={handleClick}>
     {#each Array(card.amount + 1) as i}
 		<div
 			class="element {Color[card.color].toLowerCase()} {Filling[card.filling].toLowerCase()} {Shape[card.shape].toLowerCase()}">

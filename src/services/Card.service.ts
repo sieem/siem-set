@@ -12,7 +12,6 @@ export const cards = writable([]);
 export const cardsOnTheTable = writable([]);
 export const activatedCards = writable([]);
 export const cardsRemaining = writable(amountOfCards);
-export const wrongSetFound = writable(false);
 
 const getCardId = ({ amount, color, filling, shape }: ICard): string => `${amount}${color}${filling}${shape}`;
 const getCardIds = (cards: ICard[]): string[] => cards.map((card) => getCardId(card));
@@ -92,53 +91,62 @@ const checkSet = (cards: ICard[]): boolean => {
     return true;
 }
 
+
+
 activatedCards.subscribe(async (_activatedCards: ICard[]) => {
+    if (_activatedCards.length !== 3) {
+        return;
+    }
+
     let _cardsOnTheTable: ICard[];
     let _cards: ICard[];
 
-    cardsOnTheTable.subscribe((value) => _cardsOnTheTable = value)()
-    cards.subscribe((value) => _cards = value)()
+    cardsOnTheTable.update((_cardsOnTheTable) => _cardsOnTheTable.map((cardOnTheTable) => ({ ...cardOnTheTable, active: false })));
+    cardsOnTheTable.subscribe((value) => _cardsOnTheTable = value)();
+    cards.subscribe((value) => _cards = value)();
 
-    if (_activatedCards.length === 3) {
-        if (checkSet(_activatedCards)) {
-            const oldCardsOnTheTable = _cardsOnTheTable;
-            _cardsOnTheTable = _cardsOnTheTable.filter((cardOnTheTable) => !getCardIds(_activatedCards).includes(getCardId(cardOnTheTable)));
+    activatedCards.set([]);
 
-            let newCardsOnTheTable = _cards.splice(0, 3);
-            let validSetFound = false;
+    if (checkSet(_activatedCards)) {
+        const oldCardsOnTheTable = _cardsOnTheTable;
+        _cardsOnTheTable = _cardsOnTheTable.filter((cardOnTheTable) => !getCardIds(_activatedCards).includes(getCardId(cardOnTheTable)));
 
-            for (let i = 0; i < retryAmount; i++) {
-                if (findValidSet([..._cardsOnTheTable, ...newCardsOnTheTable])) {
-                    i = retryAmount;
-                    validSetFound = true;
-                    continue;
-                }
-                _cards = [..._cards, ...newCardsOnTheTable];
-                newCardsOnTheTable = _cards.splice(0, 3);
+        let newCardsOnTheTable = _cards.splice(0, 3);
+        let validSetFound = false;
+
+        for (let i = 0; i < retryAmount; i++) {
+            if (findValidSet([..._cardsOnTheTable, ...newCardsOnTheTable])) {
+                validSetFound = true;
+                break;
             }
+            _cards = [..._cards, ...newCardsOnTheTable];
+            newCardsOnTheTable = _cards.splice(0, 3);
+        }
 
-            _cardsOnTheTable = oldCardsOnTheTable.map((cardOnTheTable) => 
+        _cardsOnTheTable = oldCardsOnTheTable
+            .map((cardOnTheTable) =>
                 getCardIds(_activatedCards).includes(getCardId(cardOnTheTable))
-                ? newCardsOnTheTable.splice(0,1)[0]
-                : cardOnTheTable
+                    ? newCardsOnTheTable.splice(0, 1)[0]
+                    : cardOnTheTable
             )
             .filter((el) => el !== undefined);
 
-            countScore(getCardIds(_activatedCards));
+        countScore(getCardIds(_activatedCards));
 
-            cardsRemaining.set(_cards.length);
-            cardsOnTheTable.set(_cardsOnTheTable.map((cardOnTheTable) => ({ ...cardOnTheTable, active: false })));
-            cards.set(_cards);
+        cardsRemaining.set(_cards.length);
+        cards.set(_cards);
+        cardsOnTheTable.set(_cardsOnTheTable);
 
-            if (!validSetFound) {
-                handleEndOfGame();
-            }
-        } else {
-            wrongSetFound.set(true);
-            await sleep(820); // wait for the animation to end
-            wrongSetFound.set(false);
+        if (!validSetFound) {
+            handleEndOfGame();
         }
-
-        activatedCards.set([]);
+    } else {
+        const activatedCardsIds = getCardIds(_activatedCards);
+        cardsOnTheTable.update((_cardsOnTheTable) => _cardsOnTheTable.map((cardOnTheTable) => activatedCardsIds.includes(getCardId(cardOnTheTable))
+            ? { ...cardOnTheTable, wrong: true }
+            : cardOnTheTable
+        ));
+        await sleep(820); // wait for the animation to end
+        cardsOnTheTable.update((_cardsOnTheTable) => _cardsOnTheTable.map((cardOnTheTable) => ({ ...cardOnTheTable, wrong: false })));
     }
 });
