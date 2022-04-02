@@ -32,7 +32,7 @@ import InstallDialog from './components/InstallDialog/InstallDialog.svelte';
 	gameEnded$.subscribe((value) => gameEnded = value)();
 	timer$.set(!gameEnded);
 
-	document.addEventListener('visibilitychange', (ev) => document.visibilityState === 'visible' ? requestWakeLock() : saveState());
+	document.addEventListener('visibilitychange', () => document.visibilityState === 'visible' ? requestWakeLock() : saveState());
 </script>
 
 <svelte:head>

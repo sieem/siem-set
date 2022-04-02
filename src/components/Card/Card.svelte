@@ -20,7 +20,7 @@
 </script>
 
 <div class="card {card.active ? 'active': ''} {card.showHint ? 'showHint': ''} {card.wrong ? 'wrongSet': ''}" use:tap on:tap={handleClick}>
-    {#each Array(card.amount + 1) as i}
+	{#each Array(card.amount + 1) as _}
 		<div
 			class="element {Color[card.color].toLowerCase()} {Filling[card.filling].toLowerCase()} {Shape[card.shape].toLowerCase()}">
 		</div>
@@ -115,10 +115,6 @@
 	}
 
 	/* Shape */
-	.element.square {
-		/* transform: rotate(-45deg) scaleX(0.4); */
-	}
-
 	.element.oval {
 		border-radius: 25px;
 	}

@@ -27,7 +27,7 @@
                     <div>{row.score}</div>
                     <div>{timeDisplayer(row.time)}</div>
                     <div>{dateDisplayer(row.date)}</div>
-                    <div>{row.unusedCards ?? 'Unknown'}</div>
+                    <div>{row.unusedCards ?? '?'}</div>
                 </div>
             {/each}
         </div>

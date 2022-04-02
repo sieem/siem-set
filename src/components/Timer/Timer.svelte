@@ -3,7 +3,7 @@
     import { relaxedMode$ } from "../../services/RelaxedMode.service";
     import { time$, timer$ } from "../../services/Timer.service";
 
-    document.addEventListener('visibilitychange', (ev) => {
+    document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'hidden') {
             timer$.set(false);
         }

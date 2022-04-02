@@ -8,7 +8,7 @@
     {#if !$relaxedMode$}
         <b>Score</b> {$score$}<br>
         {#if $highScore$}
-            <span>(Best: {$highScore$.score$} in {timeDisplayer($highScore$.time)})</span>
+            <span>(Best: {$highScore$.score} in {timeDisplayer($highScore$.time)})</span>
         {/if}
     {/if}
 </div>
