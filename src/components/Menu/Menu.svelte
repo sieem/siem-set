@@ -29,7 +29,7 @@ div {
     height: var(--size);
     border-style: solid;
     border-width: calc(var(--size) / 2);
-    border-color: #202020;
+    border-color: var(--button-color);
     box-sizing: border-box;
     cursor: pointer;
     position: relative;
@@ -38,12 +38,12 @@ div {
 
 .button.play {
     border-width: calc(var(--size) / 2) 0px calc(var(--size) / 2) var(--size);
-    border-color: transparent transparent transparent #202020;
+    border-color: transparent transparent transparent var(--button-color);
 }
 
 .button.pause {
     border-style: double;
     border-width: 0px 0px 0px var(--size);
-    border-color: #202020;
+    border-color: var(--button-color);
 }
 </style>

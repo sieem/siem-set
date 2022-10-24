@@ -60,9 +60,9 @@
 	}
 
 	@keyframes showHint {
-		0% {background-color: white; border-color: var(--border-color);}
+		0% {background-color: var(--card-background); border-color: var(--border-color);}
 		50% {background-color: var(--border-color-active); border-color: var(--border-color-active);}
-		100% {background-color: white; border-color: var(--border-color);}
+		100% {background-color: var(--card-background); border-color: var(--border-color);}
 	}
 
 	@keyframes shake {
@@ -86,7 +86,7 @@
 	.element {
 		height: 20%;
 		width: 50%;
-		background: white;
+		background: var(--card-background);
 	}
 
 	/* Color */
@@ -102,6 +102,20 @@
 		--color: #4A2683;
 	}
 
+	@media (prefers-color-scheme: dark) {
+	.element.red {
+		--color: #b02429;
+	}
+
+	.element.green {
+		--color: #00843a;
+	}
+
+	.element.blue {
+		--color: #7b4fc1;
+	}
+}
+
 	/* Filling */
 	.element.empty {
 		border: 3px solid var(--color);
@@ -109,7 +123,7 @@
 
 	.element.striped {
 		border: 3px solid var(--color);
-		background: repeating-linear-gradient(90deg,white,white 75%, var(--color) 25%, var(--color));
+		background: repeating-linear-gradient(90deg,var(--card-background),var(--card-background) 75%, var(--color) 25%, var(--color));
 		background-size: 3% 100%;
 	}
 	.element.full {
@@ -125,6 +139,5 @@
 		border-top-right-radius: 5%;
 		border-bottom-left-radius: 5%;
 		border-bottom-right-radius: 100%;
-
 	}
 </style>

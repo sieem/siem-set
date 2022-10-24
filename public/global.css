@@ -16,18 +16,24 @@ body {
 }
 
 body {
-	background: lightblue;
+	background: var(--background);
+	color: var(--color);
 	font-family: 'Arimo', sans-serif;
 }
 
 :root {
-	--border-color-active: salmon;
+	--background: #add8e6;
+	--color: #000;
+	--border-color-active: #fa8072;
+	--border-color: #aaa;
+	--card-background: #fff;
+	--button-color: #202020;
+
+	--border-width: 2px;
 }
 
 .card {
-	--border-color: #aaa;
-	--border-width: 2px;
-    background: white;
+    background: var(--card-background);
     border-radius: 10px;
     border: var(--border-width) solid var(--border-color);
     padding: 5px;
@@ -36,4 +42,15 @@ body {
     text-align: center;
     cursor: pointer;
     justify-self: center;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--background: #344044;
+		--color: #DCD7C9;
+		--border-color-active: #A27B5C;
+		--border-color: #3F4E4F;
+		--card-background: #2C3639;
+		--button-color: #bcbcbc;
+	}
 }
