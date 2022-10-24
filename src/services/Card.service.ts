@@ -3,15 +3,11 @@ import { writable } from 'svelte/store';
 import { countScore } from './Score.service';
 import { handleEndOfGame } from './EndGame.service';
 import { sleep } from '../helper/sleep.helper';
+import { activatedCards$, amountOfCards, cards$, cardsOnTheTable$, cardsRemaining$ } from './Card.store';
 
 const correctPairs = ['000', '111', '222', '012'];
-const amountOfCards = globalThis.isProduction ? 81 : 27;
-const retryAmount = 10;
 
-export const cards$ = writable([]);
-export const cardsOnTheTable$ = writable([]);
-export const activatedCards$ = writable([]);
-export const cardsRemaining$ = writable(amountOfCards);
+const retryAmount = 10;
 
 const getCardId = ({ amount, color, filling, shape }: ICard): string => `${amount}${color}${filling}${shape}`;
 const getCardIds = (cards: ICard[]): string[] => cards.map((card) => getCardId(card));

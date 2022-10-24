@@ -1,7 +1,7 @@
 import { writable } from "svelte/store";
-import { cardsOnTheTable$ } from './Card.service';
+import { cardsOnTheTable$ } from "./Card.store";
 import type { ScoresTables } from "./Database.service";
-import { highScore$, insertScore, score$ } from "./Score.service";
+import { insertScore, score$ } from "./Score.service";
 import { time$, timer$ } from "./Timer.service";
 
 export const gameEnded$ = writable(false);

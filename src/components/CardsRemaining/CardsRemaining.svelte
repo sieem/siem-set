@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { cardsRemaining$ } from '../../services/Card.service';
+    import { cardsRemaining$ } from '../../services/Card.store';
 </script>
 
 <div class="cardsRemaining">

@@ -1,7 +1,8 @@
 <script lang="ts">
 import { sleep } from "../../helper/sleep.helper";
 
-import { cardsOnTheTable$, cardsRemaining$, findValidSet } from "../../services/Card.service";
+import { findValidSet } from "../../services/Card.service";
+import { cardsOnTheTable$, cardsRemaining$ } from "../../services/Card.store";
 import { hintsGiven$ } from "../../services/Hint.service";
 let amountOfHint = 0;
 

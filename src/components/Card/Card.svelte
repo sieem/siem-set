@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { tap } from 'svelte-hammer';
-	import { activatedCards$ } from "../../services/Card.service";
+	import { activatedCards$ } from "../../services/Card.store";
 	import { Color } from "./Enum/Color.enum";
 	import { Filling } from "./Enum/Filling.enum";
 	import { Shape } from "./Enum/Shape.enum";

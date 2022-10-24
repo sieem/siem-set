@@ -7,7 +7,8 @@
 	import Hint from './components/Hint/Hint.svelte';
 	import Social from './components/Social/Social.svelte';
 	import CardsRemaining from './components/CardsRemaining/CardsRemaining.svelte';
-	import { generateAllCards, cardsOnTheTable$ } from './services/Card.service';
+	import { generateAllCards } from './services/Card.service';
+	import { cardsOnTheTable$ } from './services/Card.store';
 	import { requestWakeLock } from './services/WakeLock.service';
 	import { timer$ } from './services/Timer.service';
 	import { retrieveState, saveState } from './services/State.service';

@@ -1,4 +1,4 @@
-import { cards$, cardsOnTheTable$, cardsRemaining$ } from "./Card.service";
+import { cards$, cardsOnTheTable$, cardsRemaining$ } from "./Card.store";
 import { gameEnded$ } from "./EndGame.service";
 import { relaxedMode$ } from "./RelaxedMode.service";
 import { lastRecordDateTime$, score$ } from "./Score.service";
