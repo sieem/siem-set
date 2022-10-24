@@ -38,10 +38,12 @@
 		align-items: center;
 		cursor: pointer;
 		justify-self: unset;
+		transition: transform .3s;
 	}
 
 	.card.active {
 		border-color: var(--border-color-active);
+		transform: scale(0.95);
 	}
 
 	.card.showHint {
@@ -65,19 +67,19 @@
 
 	@keyframes shake {
 		10%, 90% {
-			transform: translate3d(-1px, 0, 0);
+			transform: translate3d(-1px, 0, 0) scale(0.95);
 		}
 		
 		20%, 80% {
-			transform: translate3d(2px, 0, 0);
+			transform: translate3d(2px, 0, 0) scale(0.95);
 		}
 
 		30%, 50%, 70% {
-			transform: translate3d(-4px, 0, 0);
+			transform: translate3d(-4px, 0, 0) scale(0.95);
 		}
 
 		40%, 60% {
-			transform: translate3d(4px, 0, 0);
+			transform: translate3d(4px, 0, 0) scale(0.95);
 		}
 	}
 
