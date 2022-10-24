@@ -1,5 +1,5 @@
 import { writable } from "svelte/store";
-import { database, ScoresTables } from './Database.service';
+import { database, type ScoresTables } from './Database.service';
 import { hintsGiven$ } from "./Hint.service";
 import { time$, getLastTimePairFound, setLastTimePairFound } from "./Timer.service";
 export const score$ = writable(0);
