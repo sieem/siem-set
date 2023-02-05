@@ -66,7 +66,6 @@ export const generateAllCards = (): void => {
         _cardsOnTheTable = _cards.splice(0, 12);
     }
 
-    cardsRemaining.set(_cards.length);
     cardsOnTheTable.set(_cardsOnTheTable);
     cards.set(_cards);
 }
@@ -123,7 +122,6 @@ activatedCards.subscribe(async (_activatedCards: ICard[]) => {
 
         countScore(getCardIds(_activatedCards));
 
-        cardsRemaining.set(updatedCards.length);
         cards.set(updatedCards);
         cardsOnTheTable.set(updatedCardsOnTheTable);
 
