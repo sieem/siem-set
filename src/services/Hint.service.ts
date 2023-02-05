@@ -1,3 +1,3 @@
-import { writable } from "svelte/store";
+import { writeableWithValue } from "../helper/writeableWithValue.helper";
 
-export const hintsGiven = writable(0);
+export const hintsGiven = writeableWithValue(0);

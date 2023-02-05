@@ -29,6 +29,7 @@ const handleClick = async () => {
     )));
 };
 
+// When card remaining change, we can reset the hint
 cardsRemaining.subscribe(() => {
     amountOfHint = 0;
     hintsGiven.set(0);

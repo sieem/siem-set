@@ -1,6 +1,7 @@
 import { writable } from "svelte/store";
+import { writeableWithValue } from "../helper/writeableWithValue.helper";
 export const timer = writable(true);
-export const time = writable(0);
+export const time = writeableWithValue(0);
 
 let _timer: NodeJS.Timeout;
 let lastTimePairFound = 0;
@@ -10,7 +11,7 @@ const controlTimer = (play: boolean) =>
         ? _timer = setInterval(() => time.update((time) => ++time), 1000)
         : clearInterval(_timer);
 
-export const setLastTimePairFound = () => time.subscribe((time) => lastTimePairFound = time)();
-export const getLastTimePairFound = (): number => lastTimePairFound;
+export const setLastTimePairFound = () => lastTimePairFound = time.value();
+export const getLastTimePairFound = () => lastTimePairFound;
 
-timer.subscribe((play: boolean) => controlTimer(play));
+timer.subscribe((play) => controlTimer(play));

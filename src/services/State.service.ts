@@ -5,14 +5,14 @@ import { lastRecordDateTime, score } from "./Score.service";
 import { time } from "./Timer.service";
 
 export const saveState = (): void => {
-    time.subscribe((time) => localStorage.setItem('time', String(time)))();
-    score.subscribe((score) => localStorage.setItem('score', String(score)))();
-    cardsRemaining.subscribe((cardsRemaining) => localStorage.setItem('cardsRemaining', String(cardsRemaining)))();
-    gameEnded.subscribe((gameEnded) => localStorage.setItem('gameEnded', String(gameEnded)))();
-    cardsOnTheTable.subscribe((cardsOnTheTable) => localStorage.setItem('cardsOnTheTable', JSON.stringify(cardsOnTheTable)))();
-    cards.subscribe((cards) => localStorage.setItem('cards', JSON.stringify(cards)))();
-    lastRecordDateTime.subscribe((lastRecordDateTime) => localStorage.setItem('lastRecordDateTime', String(lastRecordDateTime)))();
-    relaxedMode.subscribe((relaxedMode) => localStorage.setItem('relaxedMode', String(relaxedMode)))();
+    localStorage.setItem('time', String(time.value()));
+    localStorage.setItem('score', String(score.value()));
+    localStorage.setItem('cardsRemaining', String(cardsRemaining.value()));
+    localStorage.setItem('gameEnded', String(gameEnded.value()));
+    localStorage.setItem('cardsOnTheTable', JSON.stringify(cardsOnTheTable.value()));
+    localStorage.setItem('cards', JSON.stringify(cards.value()));
+    localStorage.setItem('lastRecordDateTime', String(lastRecordDateTime.value()));
+    localStorage.setItem('relaxedMode', String(relaxedMode.value()));
 }
 
 export const retrieveState = (): boolean => {

@@ -1,12 +1,13 @@
 import { writable } from "svelte/store";
+import { writeableWithValue } from "../helper/writeableWithValue.helper";
 import { database, type ScoresTables } from './Database.service';
 import { hintsGiven } from "./Hint.service";
 import { time, getLastTimePairFound, setLastTimePairFound } from "./Timer.service";
-export const score = writable(0);
+export const score = writeableWithValue(0);
 export const scoreBoard = writable<{score: ScoresTables[], time: ScoresTables[]}>({ score: [], time: []});
 export const highScore = writable<Pick<ScoresTables, 'score' | 'time'>>({ score: 0, time: 0 });
 export const playedGames = writable(0);
-export const lastRecordDateTime = writable(0);
+export const lastRecordDateTime = writeableWithValue(0);
 
 export const countScore = ((activatedCardIds: string[]) => {
     const cardsSplit = activatedCardIds.map((activatedCardId) => activatedCardId.split(''));
@@ -24,15 +25,10 @@ export const countScore = ((activatedCardIds: string[]) => {
     }
 
     score.update((currentScore) => {
-        let currentTime: number;
-        time.subscribe((value) => currentTime = value)();
-        let _hintsGiven: number;
-        hintsGiven.subscribe((value) => _hintsGiven = value)();
-
-        const newScore = (1 / (currentTime - getLastTimePairFound() + 1)) * pairScore * 10;
+        const newScore = (1 / (time.value() - getLastTimePairFound() + 1)) * pairScore * 10;
         const hintPenalty = [1, 2/3, 1/3, 0];
 
-        return currentScore + Math.round(newScore * hintPenalty[_hintsGiven]);
+        return currentScore + Math.round(newScore * hintPenalty[hintsGiven.value()]);
     });
 
     setLastTimePairFound();

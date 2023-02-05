@@ -90,32 +90,30 @@ activatedCards.subscribe(async (_activatedCards: ICard[]) => {
         return;
     }
 
-    let _cardsOnTheTable: ICard[];
-    let _cards: ICard[];
+    let updatedCardsOnTheTable: ICard[];
+    let updatedCards = cards.value();
 
     cardsOnTheTable.update((cardsOnTheTable) => cardsOnTheTable.map((cardOnTheTable) => ({ ...cardOnTheTable, active: false })));
-    cardsOnTheTable.subscribe((value) => _cardsOnTheTable = value)();
-    cards.subscribe((value) => _cards = value)();
 
     activatedCards.set([]);
 
     if (checkSet(_activatedCards)) {
-        const oldCardsOnTheTable = _cardsOnTheTable;
-        _cardsOnTheTable = _cardsOnTheTable.filter((cardOnTheTable) => !getCardIds(_activatedCards).includes(getCardId(cardOnTheTable)));
+        const oldCardsOnTheTable = cardsOnTheTable.value();
+        updatedCardsOnTheTable = oldCardsOnTheTable.filter((cardOnTheTable) => !getCardIds(_activatedCards).includes(getCardId(cardOnTheTable)));
 
-        let newCardsOnTheTable = _cards.splice(0, 3);
+        let newCardsOnTheTable = updatedCards.splice(0, 3);
         let validSetFound = false;
 
         for (let i = 0; i < retryAmount; i++) {
-            if (findValidSet([..._cardsOnTheTable, ...newCardsOnTheTable])) {
+            if (findValidSet([...updatedCardsOnTheTable, ...newCardsOnTheTable])) {
                 validSetFound = true;
                 break;
             }
-            _cards = [..._cards, ...newCardsOnTheTable];
-            newCardsOnTheTable = _cards.splice(0, 3);
+            updatedCards = [...updatedCards, ...newCardsOnTheTable];
+            newCardsOnTheTable = updatedCards.splice(0, 3);
         }
 
-        _cardsOnTheTable = oldCardsOnTheTable
+        updatedCardsOnTheTable = oldCardsOnTheTable
             .map((cardOnTheTable) =>
                 getCardIds(_activatedCards).includes(getCardId(cardOnTheTable))
                     ? newCardsOnTheTable.splice(0, 1)[0]
@@ -125,9 +123,9 @@ activatedCards.subscribe(async (_activatedCards: ICard[]) => {
 
         countScore(getCardIds(_activatedCards));
 
-        cardsRemaining.set(_cards.length);
-        cards.set(_cards);
-        cardsOnTheTable.set(_cardsOnTheTable);
+        cardsRemaining.set(updatedCards.length);
+        cards.set(updatedCards);
+        cardsOnTheTable.set(updatedCardsOnTheTable);
 
         if (!validSetFound) {
             handleEndOfGame();
