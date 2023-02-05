@@ -4,36 +4,22 @@ import { relaxedMode } from "./RelaxedMode.service";
 import { lastRecordDateTime, score } from "./Score.service";
 import { time } from "./Timer.service";
 
+const writeablesToSave = { time, score, gameEnded, cardsOnTheTable, cards, lastRecordDateTime, relaxedMode };
+
 export const saveState = (): void => {
-    localStorage.setItem('time', String(time.value()));
-    localStorage.setItem('score', String(score.value()));
-    localStorage.setItem('gameEnded', String(gameEnded.value()));
-    localStorage.setItem('cardsOnTheTable', JSON.stringify(cardsOnTheTable.value()));
-    localStorage.setItem('cards', JSON.stringify(cards.value()));
-    localStorage.setItem('lastRecordDateTime', String(lastRecordDateTime.value()));
-    localStorage.setItem('relaxedMode', String(relaxedMode.value()));
+    const entriesWithValue = Object.entries(writeablesToSave).map(([key, writable]) => [key, writable.value()]);
+    const state = Object.fromEntries(entriesWithValue);
+    localStorage.setItem('state', JSON.stringify(state));
 }
 
 export const retrieveState = (): boolean => {
-    const _time = Number(localStorage.getItem('time'));
-    const _score = Number(localStorage.getItem('score'));
-    const _gameEnded = localStorage.getItem('gameEnded') === 'true';
-    const _cardsOnTheTable = JSON.parse(localStorage.getItem('cardsOnTheTable'));
-    const _cards = JSON.parse(localStorage.getItem('cards'));
-    const _lastRecordDateTime = Number(localStorage.getItem('lastRecordDateTime'));
-    const _relaxedMode = localStorage.getItem('relaxedMode') === 'true';
-    
-    if (![_time, _score, _gameEnded, _cardsOnTheTable, _cards, _lastRecordDateTime, _relaxedMode].includes(null)) {
-        time.set(_time);
-        score.set(_score);
-        gameEnded.set(_gameEnded);
-        cardsOnTheTable.set(_cardsOnTheTable);
-        cards.set(_cards);
-        lastRecordDateTime.set(_lastRecordDateTime);
-        relaxedMode.set(_relaxedMode);
-
+    try {
+        const state = JSON.parse(localStorage.getItem('state'));
+        //@ts-expect-error TS doesn't know what the writable will accept
+        Object.entries(writeablesToSave).forEach(([key, writable]) => writable.set(state[key]));
         return true;
-    } else {
+
+    } catch (error) {
         return false;
     }
 }
