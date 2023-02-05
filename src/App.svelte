@@ -8,18 +8,15 @@
 	import Social from './components/Social/Social.svelte';
 	import CardsRemaining from './components/CardsRemaining/CardsRemaining.svelte';
 	import { generateAllCards } from './services/Card.service';
-	import { cardsOnTheTable$ } from './services/Card.store';
+	import { cardsOnTheTable } from './services/Card.store';
 	import { requestWakeLock } from './services/WakeLock.service';
-	import { timer$ } from './services/Timer.service';
+	import { timer } from './services/Timer.service';
 	import { retrieveState, saveState } from './services/State.service';
-	import { gameEnded$ } from './services/EndGame.service';
+	import { gameEnded } from './services/EndGame.service';
 	import PausedContainer from './components/PausedContainer/PausedContainer.svelte';
 	import { setLatestHighScore, setPlayedGames, updateScoreBoardStore } from './services/Score.service';
-	import { activateServiceWorker, showInstallDialog$ } from './services/ActivateServiceWorker.service';
+	import { activateServiceWorker, showInstallDialog } from './services/ActivateServiceWorker.service';
 import InstallDialog from './components/InstallDialog/InstallDialog.svelte';
-
-	let gameEnded: boolean;
-
 	activateServiceWorker();
 
 	if (!retrieveState()) {
@@ -30,8 +27,7 @@ import InstallDialog from './components/InstallDialog/InstallDialog.svelte';
 	setLatestHighScore();
 	setPlayedGames();
 
-	gameEnded$.subscribe((value) => gameEnded = value)();
-	timer$.set(!gameEnded);
+	timer.set(!$gameEnded);
 
 	document.addEventListener('visibilitychange', () => document.visibilityState === 'visible' ? requestWakeLock() : saveState());
 </script>
@@ -46,9 +42,9 @@ import InstallDialog from './components/InstallDialog/InstallDialog.svelte';
 		<Timer/>
 		<Menu/>
 	</header>
-	{#if $timer$ && !$gameEnded$}
+	{#if $timer && !$gameEnded}
 		<div class="field">
-			{#each $cardsOnTheTable$ as card}
+			{#each $cardsOnTheTable as card}
 				<Card {card}/>
 			{/each}
 		</div>
@@ -58,13 +54,13 @@ import InstallDialog from './components/InstallDialog/InstallDialog.svelte';
 	
 	<footer>
 		<CardsRemaining/>
-		{#if $timer$ && !$gameEnded$}
+		{#if $timer && !$gameEnded}
 			<Hint/>
 		{:else}
 			<div></div>
 		{/if}
 		<Help/>
-		{#if $showInstallDialog$}
+		{#if $showInstallDialog}
 			<InstallDialog/>
 		{:else}
 			<Social/>

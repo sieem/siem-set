@@ -1,17 +1,19 @@
 <script lang="ts">
-    import { timer$ } from "../../services/Timer.service";
+    import { timer } from "../../services/Timer.service";
     let showHelp = false;
 
     const handleClick = () => {
         showHelp = !showHelp;
-        timer$.set(!showHelp);
+        timer.set(!showHelp);
     };
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="card" on:click={handleClick}>Help</div>
 
 {#if showHelp}
     <div class="help-container">
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div class="close-container">
             <div class="card" on:click={handleClick}>X</div>
         </div>

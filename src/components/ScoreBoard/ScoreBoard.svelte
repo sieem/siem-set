@@ -1,18 +1,20 @@
 <script lang="ts">
-    import { dateDisplayer } from "../../helper/dateDisplayer.helper";
-    import { timeDisplayer } from "../../helper/timeDisplayer.helper";
-    import { lastRecordDateTime$, scoreBoard$ } from "../../services/Score.service";
+    import { formatDate } from "../../helper/formatDate.helper";
+    import { formatTime } from "../../helper/formatTime.helper";
+    import { lastRecordDateTime, scoreBoard } from "../../services/Score.service";
 
     let activeTab: 'score' | 'time' = 'score';
 
     const changeActiveTab = (tab: 'score' | 'time') => activeTab = tab;
 </script>
 
-{#if $scoreBoard$[activeTab].length}
+{#if $scoreBoard[activeTab].length}
     <div class="card">
         <div class="table">
             <div class="row header tabs">
+                <!-- svelte-ignore a11y-click-events-have-key-events -->
                 <div class="tab {activeTab === 'score' ? 'active' : ''}" on:click={() => changeActiveTab('score')}>By Score</div>
+                <!-- svelte-ignore a11y-click-events-have-key-events -->
                 <div class="tab {activeTab === 'time' ? 'active' : ''}" on:click={() => changeActiveTab('time')}>By Time</div>
             </div>
             <div class="row header">
@@ -22,11 +24,11 @@
                 <div>Date</div>
                 <div>Unused cards</div>
             </div>
-            {#each $scoreBoard$[activeTab] as row}
-                <div class="row {$lastRecordDateTime$ === row.date ? 'active' : ''}">
+            {#each $scoreBoard[activeTab] as row}
+                <div class="row {$lastRecordDateTime === row.date ? 'active' : ''}">
                     <div>{row.score}</div>
-                    <div>{timeDisplayer(row.time)}</div>
-                    <div>{dateDisplayer(row.date)}</div>
+                    <div>{formatTime(row.time)}</div>
+                    <div>{formatDate(row.date)}</div>
                     <div>{row.unusedCards ?? '?'}</div>
                 </div>
             {/each}

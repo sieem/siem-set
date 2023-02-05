@@ -6,6 +6,7 @@ const finishInstall = () => {
 
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="card" on:click="{finishInstall}">New version detected, finish install</div>
 
 <style>

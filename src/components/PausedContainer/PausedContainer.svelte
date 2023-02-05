@@ -1,9 +1,9 @@
 <script lang="ts">
-import { gameEnded$ } from "../../services/EndGame.service";
-import { relaxedMode$ } from "../../services/RelaxedMode.service";
+import { gameEnded } from "../../services/EndGame.service";
+import { relaxedMode } from "../../services/RelaxedMode.service";
 import { restartGame } from "../../services/RestartGame.service";
-import { playedGames$ } from "../../services/Score.service";
-import { timer$ } from "../../services/Timer.service";
+import { playedGames } from "../../services/Score.service";
+import { timer } from "../../services/Timer.service";
 import ScoreBoard from "../ScoreBoard/ScoreBoard.svelte";
 
 const restartGameHandler = () => {
@@ -11,35 +11,37 @@ const restartGameHandler = () => {
 };
 
 const continueHandler = () => {
-    timer$.set(true);
+    timer.set(true);
 };
 
 const onChange = () => {
-    relaxedMode$.update((value) => value);
+    relaxedMode.update((value) => value);
 }
 
 </script>
 
 <div class="paused-container">
     <div>
-            <h3>{$gameEnded$ ? 'Game over' : 'Game paused'}</h3>
-            {#if $playedGames$ > 0}
-                <div class="playedGames">Games played: {$playedGames$}</div>
+            <h3>{$gameEnded ? 'Game over' : 'Game paused'}</h3>
+            {#if $playedGames > 0}
+                <div class="playedGames">Games played: {$playedGames}</div>
             {/if}
     </div>
 
-    {#if !$relaxedMode$}
+    {#if !$relaxedMode}
         <ScoreBoard/>
     {/if}
     <div class="row">
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div class="card" on:click={restartGameHandler}>Restart</div>
-        {#if !$gameEnded$}
+        {#if !$gameEnded}
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
             <div class="card" on:click={continueHandler}>Continue</div>
         {/if}
     </div>
     <div>
         <span>Relaxed mode</span>
-        <input type="checkbox" bind:checked={$relaxedMode$} on:change="{onChange}">
+        <input type="checkbox" bind:checked={$relaxedMode} on:change="{onChange}">
     </div>
 </div>
 <style>

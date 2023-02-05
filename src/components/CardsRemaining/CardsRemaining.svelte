@@ -1,11 +1,11 @@
 <script lang="ts">
-    import { cardsRemaining$ } from '../../services/Card.store';
+    import { cardsRemaining } from '../../services/Card.store';
 </script>
 
 <div class="cardsRemaining">
-    <div class="card one">{$cardsRemaining$}</div>
-    <div class="card two {$cardsRemaining$ < 3 ? 'hidden': ''}"></div>
-    <div class="card three {$cardsRemaining$ < 3 ? 'hidden': ''}"></div>
+    <div class="card one">{$cardsRemaining}</div>
+    <div class="card two {$cardsRemaining < 3 ? 'hidden': ''}"></div>
+    <div class="card three {$cardsRemaining < 3 ? 'hidden': ''}"></div>
 </div>
 
 <style>

@@ -1,21 +1,19 @@
 <script lang="ts">
-    import { gameEnded$ } from "../../services/EndGame.service";
+    import { gameEnded } from "../../services/EndGame.service";
     import { restartGame } from "../../services/RestartGame.service";
-    import { timer$ } from "../../services/Timer.service";
+    import { timer } from "../../services/Timer.service";
 
     const handleClick = () => {
-        timer$.update((ticking) => !ticking);
+        timer.update((ticking) => !ticking);
 
-        let gameEnded: boolean;
-        gameEnded$.subscribe(value => gameEnded = value)();
-
-        if (gameEnded) {
+        if ($gameEnded) {
             restartGame();
         }
     };
 </script>
 
-<div class="button {$timer$ ? 'pause': 'play'}" on:click={handleClick}></div>
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<div class="button {$timer ? 'pause': 'play'}" on:click={handleClick}></div>
 
 
 <style>

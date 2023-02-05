@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { tap } from 'svelte-hammer';
-	import { activatedCards$ } from "../../services/Card.store";
+	import { activatedCards } from "../../services/Card.store";
 	import { Color } from "./Enum/Color.enum";
 	import { Filling } from "./Enum/Filling.enum";
 	import { Shape } from "./Enum/Shape.enum";
@@ -12,9 +12,9 @@
 		card.active = !card.active;
 
 		if (card.active) {
-			activatedCards$.update((activatedCards) => ([card, ...activatedCards]));
+			activatedCards.update((activatedCards) => ([card, ...activatedCards]));
 		} else {
-			activatedCards$.update((activatedCards) => activatedCards.filter((activatedCard) => activatedCard !== card));
+			activatedCards.update((activatedCards) => activatedCards.filter((activatedCard) => activatedCard !== card));
 		}
 	}
 </script>
