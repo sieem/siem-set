@@ -13,9 +13,9 @@
         <div class="table">
             <div class="row header tabs">
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
-                <div class="tab {activeTab === 'score' ? 'active' : ''}" on:click={() => changeActiveTab('score')}>By Score</div>
+                <div class="tab" class:active={activeTab === 'score'} on:click={() => changeActiveTab('score')}>By Score</div>
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
-                <div class="tab {activeTab === 'time' ? 'active' : ''}" on:click={() => changeActiveTab('time')}>By Time</div>
+                <div class="tab" class:active={activeTab === 'time'} on:click={() => changeActiveTab('time')}>By Time</div>
             </div>
             <div class="row header">
                 <div></div>
@@ -25,7 +25,7 @@
                 <div>Unused cards</div>
             </div>
             {#each $scoreBoard[activeTab] as row}
-                <div class="row {$lastRecordDateTime === row.date ? 'active' : ''}">
+                <div class="row" class:active={$lastRecordDateTime === row.date}>
                     <div>{row.score}</div>
                     <div>{formatTime(row.time)}</div>
                     <div>{formatDate(row.date)}</div>

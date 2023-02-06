@@ -19,7 +19,13 @@
 	}
 </script>
 
-<div class="card {card.active ? 'active': ''} {card.showHint ? 'showHint': ''} {card.wrong ? 'wrongSet': ''}" use:tap on:tap={handleClick}>
+<div 
+	class="card" 
+	class:active={card.active}
+	class:showHint={card.showHint}
+	class:wrongSet={card.wrong}
+	use:tap 
+	on:tap={handleClick}>
 	{#each Array(card.amount + 1) as _}
 		<div
 			class="element {Color[card.color].toLowerCase()} {Filling[card.filling].toLowerCase()} {Shape[card.shape].toLowerCase()}">

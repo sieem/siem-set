@@ -13,7 +13,7 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="button {$timer ? 'pause': 'play'}" on:click={handleClick}></div>
+<div class="button" class:pause={$timer} class:play={!$timer} on:click={handleClick}></div>
 
 
 <style>

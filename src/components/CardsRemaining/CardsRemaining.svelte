@@ -4,8 +4,8 @@
 
 <div class="cardsRemaining">
     <div class="card one">{$cardsRemaining}</div>
-    <div class="card two {$cardsRemaining < 3 ? 'hidden': ''}"></div>
-    <div class="card three {$cardsRemaining < 3 ? 'hidden': ''}"></div>
+    <div class="card two" class:hidden={$cardsRemaining < 3}></div>
+    <div class="card three" class:hidden={$cardsRemaining < 3}></div>
 </div>
 
 <style>
