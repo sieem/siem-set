@@ -23,6 +23,7 @@
     position: absolute;
     height: 100%;
     width: 100%;
+    cursor: auto;
   }
 
   .one {
