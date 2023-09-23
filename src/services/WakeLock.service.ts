@@ -4,7 +4,9 @@ export const requestWakeLock = async () => {
     try {
       await navigator.wakeLock.request();
     } catch (err) {
-      console.error(`${err.name}, ${err.message}`);
+      if (err && typeof err === 'object' && 'name' in err && 'message' in err) {
+        console.error(`${err.name}, ${err.message}`);
+      }
     }
   }
 };
