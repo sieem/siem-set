@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { darkMode } from '../../services/DarkMode.service';
   import { gameEnded } from '../../services/EndGame.service';
   import { relaxedMode } from '../../services/RelaxedMode.service';
   import { restartGame } from '../../services/RestartGame.service';
@@ -14,8 +15,12 @@
     timer.set(true);
   };
 
-  const onChange = () => {
+  const changeRelaxedMode = () => {
     relaxedMode.update((value) => value);
+  };
+
+  const changeDarkMode = () => {
+    darkMode.update((value) => value);
   };
 </script>
 
@@ -40,7 +45,12 @@
   </div>
   <div>
     <span>Relaxed mode</span>
-    <input type="checkbox" bind:checked={$relaxedMode} on:change={onChange} />
+    <input type="checkbox" bind:checked={$relaxedMode} on:change={changeRelaxedMode} />
+  </div>
+
+  <div>
+    <span>Dark mode</span>
+    <input type="checkbox" bind:checked={$darkMode} on:change={changeDarkMode} />
   </div>
 </div>
 

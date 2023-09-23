@@ -1,4 +1,5 @@
 import { cards, cardsOnTheTable } from './Card.store';
+import { darkMode } from './DarkMode.service';
 import { gameEnded } from './EndGame.service';
 import { relaxedMode } from './RelaxedMode.service';
 import { lastRecordDateTime, score } from './Score.service';
@@ -12,6 +13,7 @@ const writeablesToSave = {
   cards,
   lastRecordDateTime,
   relaxedMode,
+  darkMode,
 };
 
 export const saveState = (): void => {
@@ -25,6 +27,7 @@ export const saveState = (): void => {
 
 export const retrieveState = (): boolean => {
   try {
+    //@ts-expect-error JSON parse doesn't have typing
     const state = JSON.parse(localStorage.getItem('state'));
     //@ts-expect-error TS doesn't know what the writable will accept
     Object.entries(writeablesToSave).forEach(([key, writable]) => writable.set(state[key]));

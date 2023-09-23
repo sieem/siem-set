@@ -81,7 +81,7 @@
     width: 100%;
     top: 0;
     left: 0;
-    background: #add8e6e6;
+    background: var(--background-transparent);
     z-index: 30;
     padding: 50px;
     overflow: auto;

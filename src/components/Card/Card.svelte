@@ -1,5 +1,6 @@
 <script lang="ts">
   import { activatedCards } from '../../services/Card.store';
+  import { darkMode } from '../../services/DarkMode.service';
   import { Color } from './Enum/Color.enum';
   import { Filling } from './Enum/Filling.enum';
   import { Shape } from './Enum/Shape.enum';
@@ -23,6 +24,7 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
   class="card"
+  class:dark={$darkMode}
   class:active={card.active}
   class:showHint={card.showHint}
   class:wrongSet={card.wrong}
@@ -48,7 +50,7 @@
     align-items: center;
     cursor: pointer;
     justify-self: unset;
-    transition: transform 0.3s;
+    transition: transform 0.15s;
   }
 
   .card.active {
@@ -126,18 +128,16 @@
     --color: #4a2683;
   }
 
-  @media (prefers-color-scheme: dark) {
-    .element.red {
-      --color: #b02429;
-    }
+  .dark .element.red {
+    --color: #fe545a;
+  }
 
-    .element.green {
-      --color: #00843a;
-    }
+  .dark .element.green {
+    --color: #3cdd81;
+  }
 
-    .element.blue {
-      --color: #7b4fc1;
-    }
+  .dark .element.blue {
+    --color: #4357f1;
   }
 
   /* Filling */

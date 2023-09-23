@@ -12,7 +12,7 @@ const getCardId = ({ amount, color, filling, shape }: ICard): string =>
   `${amount}${color}${filling}${shape}`;
 const getCardIds = (cards: ICard[]): string[] => cards.map((card) => getCardId(card));
 
-export const findValidSet = (cards: ICard[]): ICard[] => {
+export const findValidSet = (cards: ICard[]): ICard[] | null => {
   for (let i = 0; i < Math.pow(cards.length, 3); i++) {
     const cardPair = i
       .toString(cards.length)
@@ -21,6 +21,7 @@ export const findValidSet = (cards: ICard[]): ICard[] => {
       .map((el) => parseInt(el, cards.length))
       .map((el) => cards[el]);
 
+    //@ts-expect-error no idea why I added undefined, but leaving it for safety
     if (new Set(cardPair).size !== 3 || cardPair.includes(undefined)) {
       continue;
     }

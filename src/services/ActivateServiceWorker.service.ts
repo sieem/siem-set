@@ -11,7 +11,10 @@ export const activateServiceWorker = () => {
           console.log('%c[activate-service-worker.js] Service Worker registered', 'color: #00ABD2');
           reg.onupdatefound = () => {
             const installingWorker = reg.installing;
+            console.log(installingWorker);
+            // @ts-expect-error installingWorker is defined
             installingWorker.onstatechange = () => {
+              // @ts-expect-error installingWorker is defined
               if (installingWorker.state === 'installed') {
                 console.log(
                   '%c[activate-service-worker.js] New or updated content is available',

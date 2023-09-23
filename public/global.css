@@ -23,12 +23,12 @@ body {
 
 :root {
   --background: #add8e6;
+  --background-transparent: #add8e6e6;
   --color: #000;
   --border-color-active: #fa8072;
   --border-color: #aaa;
   --card-background: #fff;
   --button-color: #202020;
-
   --border-width: 2px;
 }
 
@@ -44,13 +44,12 @@ body {
   justify-self: center;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #344044;
-    --color: #dcd7c9;
-    --border-color-active: #a27b5c;
-    --border-color: #3f4e4f;
-    --card-background: #2c3639;
-    --button-color: #bcbcbc;
-  }
+:root:has(.dark) {
+  --background: #344044;
+  --background-transparent: #344044e6;
+  --color: #dcd7c9;
+  --border-color-active: #a27b5c;
+  --border-color: #3f4e4f;
+  --card-background: #2c3639;
+  --button-color: #bcbcbc;
 }
