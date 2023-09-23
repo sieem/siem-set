@@ -1,5 +1,5 @@
 export enum Shape {
-    Square,
-    Oval,
-    Swirl
+  Square,
+  Oval,
+  Swirl,
 }

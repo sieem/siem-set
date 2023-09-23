@@ -1,5 +1,5 @@
 export enum Filling {
-    Empty,
-    Striped,
-    Full
+  Empty,
+  Striped,
+  Full,
 }

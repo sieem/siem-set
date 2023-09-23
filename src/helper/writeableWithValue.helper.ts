@@ -1,4 +1,4 @@
-import { writable, type Writable } from "svelte/store";
+import { type Writable, writable } from 'svelte/store';
 
 export const writeableWithValue = <T>(initialValue: T): Writable<T> & { value: () => T } => {
   const { subscribe, set, update } = writable<T>(initialValue);
@@ -8,8 +8,8 @@ export const writeableWithValue = <T>(initialValue: T): Writable<T> & { value: (
     update,
     value: () => {
       let value: T;
-      subscribe((_value) => value = _value)();
+      subscribe((_value) => (value = _value))();
       return value;
     },
   };
-}
+};

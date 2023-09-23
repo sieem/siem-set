@@ -1,27 +1,26 @@
 <script lang="ts">
-    import { gameEnded } from "../../services/EndGame.service";
-    import { restartGame } from "../../services/RestartGame.service";
-    import { timer } from "../../services/Timer.service";
+  import { gameEnded } from '../../services/EndGame.service';
+  import { restartGame } from '../../services/RestartGame.service';
+  import { timer } from '../../services/Timer.service';
 
-    const handleClick = () => {
-        timer.update((ticking) => !ticking);
+  const handleClick = () => {
+    timer.update((ticking) => !ticking);
 
-        if ($gameEnded) {
-            restartGame();
-        }
-    };
+    if ($gameEnded) {
+      restartGame();
+    }
+  };
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="button" class:pause={$timer} class:play={!$timer} on:click={handleClick}></div>
 
-
 <style>
-div {
+  div {
     justify-self: end;
-}
+  }
 
-.button {
+  .button {
     --size: 20px;
     width: var(--size);
     height: var(--size);
@@ -32,16 +31,16 @@ div {
     cursor: pointer;
     position: relative;
     z-index: 10;
-}
+  }
 
-.button.play {
+  .button.play {
     border-width: calc(var(--size) / 2) 0px calc(var(--size) / 2) var(--size);
     border-color: transparent transparent transparent var(--button-color);
-}
+  }
 
-.button.pause {
+  .button.pause {
     border-style: double;
     border-width: 0px 0px 0px var(--size);
     border-color: var(--button-color);
-}
+  }
 </style>

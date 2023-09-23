@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 'use strict';
 
 // Update cache names any time any of the cached files change.
@@ -39,12 +40,12 @@ self.addEventListener('install', (event) => {
         console.log('%c[service-worker.js] Files added to static cache', 'color: #FEC233');
         self.skipWaiting();
       });
-    })
+    }),
   );
 });
 
-self.addEventListener("activate", (event) => {
-  console.log("%c[service-worker.js] Service Worker activated", "color: #FEC233");
+self.addEventListener('activate', (event) => {
+  console.log('%c[service-worker.js] Service Worker activated', 'color: #FEC233');
   event.waitUntil(
     // will return an array of cache names
     caches.keys().then((keys) => {
@@ -52,18 +53,18 @@ self.addEventListener("activate", (event) => {
         // go over all available keys
         keys.map((key) => {
           if (key !== STATIC_CACHE) {
-            console.log("%c[service-worker.js] Deleting caches", "color: #FEC233");
+            console.log('%c[service-worker.js] Deleting caches', 'color: #FEC233');
             return caches.delete(key);
           }
-        })
+        }),
       );
-    })
+    }),
   );
   // ensure that the Service Worker is activated correctly (fail-safe)
   return self.clients.claim();
 });
 
-self.addEventListener("fetch", (event) => {
+self.addEventListener('fetch', (event) => {
   event.respondWith(
     // look at all caches for a match on the key (= request)
     caches.match(event.request, { ignoreVary: true }).then((response) => {
@@ -72,15 +73,14 @@ self.addEventListener("fetch", (event) => {
         return response;
       } else {
         // fetch it from the server and save to cache
-        return fetch(event.request)
-          .catch(() => {
-            return caches.open(STATIC_CACHE).then((cache) => {
-              if (event.request.headers.get("accept").includes("text/html")) {
-                return cache.match("/offline.html");
-              }
-            });
+        return fetch(event.request).catch(() => {
+          return caches.open(STATIC_CACHE).then((cache) => {
+            if (event.request.headers.get('accept').includes('text/html')) {
+              return cache.match('/offline.html');
+            }
           });
+        });
       }
-    })
+    }),
   );
 });

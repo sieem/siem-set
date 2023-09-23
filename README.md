@@ -19,4 +19,5 @@ To build the app:
 ```bash
 npm run build
 ```
+
 The public folder will then contain everything to run the application.
