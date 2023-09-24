@@ -41,7 +41,8 @@
 
 <style>
   .card {
-    --border-width: 5px;
+    --border-width: 2px;
+    --element-border-width: 2px;
     border-radius: 25px;
 
     display: flex;
@@ -142,11 +143,11 @@
 
   /* Filling */
   .element.empty {
-    border: 3px solid var(--color);
+    border: var(--element-border-width) solid var(--color);
   }
 
   .element.striped {
-    border: 3px solid var(--color);
+    border: var(--element-border-width) solid var(--color);
     background: repeating-linear-gradient(
       90deg,
       var(--card-background),
@@ -170,4 +171,12 @@
     border-bottom-left-radius: 5%;
     border-bottom-right-radius: 100%;
   }
+
+  @media screen and (min-width: 414px){
+    .card {
+      --border-width: 5px;
+      --element-border-width: 3px;
+    }
+  }
+
 </style>
