@@ -43,8 +43,10 @@
   onMount(() => {
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => darkMode.set(e.matches));
 
+    requestWakeLock();
+
     document.addEventListener('visibilitychange', () =>
-      document.visibilityState === 'visible' ? requestWakeLock() : saveState(),
+        document.visibilityState === 'visible' ? requestWakeLock() : saveState(),
     );
   })
 </script>
